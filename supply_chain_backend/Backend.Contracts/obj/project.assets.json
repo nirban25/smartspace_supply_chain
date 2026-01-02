@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\10844496\\Documents\\dotnet\\Backend.Contracts\\Backend.Contracts.csproj",
+      "projectUniqueName": "C:\\Users\\10844496\\Documents\\dotnet\\supply_chain_backend\\Backend.Contracts\\Backend.Contracts.csproj",
       "projectName": "Backend.Contracts",
-      "projectPath": "C:\\Users\\10844496\\Documents\\dotnet\\Backend.Contracts\\Backend.Contracts.csproj",
+      "projectPath": "C:\\Users\\10844496\\Documents\\dotnet\\supply_chain_backend\\Backend.Contracts\\Backend.Contracts.csproj",
       "packagesPath": "C:\\Users\\10844496\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\10844496\\Documents\\dotnet\\Backend.Contracts\\obj\\",
+      "outputPath": "C:\\Users\\10844496\\Documents\\dotnet\\supply_chain_backend\\Backend.Contracts\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\10844496\\AppData\\Roaming\\NuGet\\NuGet.Config"

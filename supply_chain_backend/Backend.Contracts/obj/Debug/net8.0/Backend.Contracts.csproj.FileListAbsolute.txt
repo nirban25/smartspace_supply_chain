@@ -9,3 +9,15 @@ C:\Users\10844496\Documents\dotnet\Backend.Contracts\obj\Debug\net8.0\Backend.Co
 C:\Users\10844496\Documents\dotnet\Backend.Contracts\obj\Debug\net8.0\refint\Backend.Contracts.dll
 C:\Users\10844496\Documents\dotnet\Backend.Contracts\obj\Debug\net8.0\Backend.Contracts.pdb
 C:\Users\10844496\Documents\dotnet\Backend.Contracts\obj\Debug\net8.0\ref\Backend.Contracts.dll
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\bin\Debug\net8.0\Backend.Contracts.deps.json
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\bin\Debug\net8.0\Backend.Contracts.dll
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\bin\Debug\net8.0\Backend.Contracts.pdb
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\obj\Debug\net8.0\Backend.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\obj\Debug\net8.0\Backend.Contracts.AssemblyInfoInputs.cache
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\obj\Debug\net8.0\Backend.Contracts.AssemblyInfo.cs
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\obj\Debug\net8.0\Backend.Contracts.csproj.CoreCompileInputs.cache
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\obj\Debug\net8.0\Backend.Contracts.sourcelink.json
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\obj\Debug\net8.0\Backend.Contracts.dll
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\obj\Debug\net8.0\refint\Backend.Contracts.dll
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\obj\Debug\net8.0\Backend.Contracts.pdb
+C:\Users\10844496\Documents\dotnet\supply_chain_backend\Backend.Contracts\obj\Debug\net8.0\ref\Backend.Contracts.dll

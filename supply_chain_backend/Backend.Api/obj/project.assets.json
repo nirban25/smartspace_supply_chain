@@ -3152,11 +3152,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\10844496\\Documents\\dotnet\\Backend.Api\\Backend.Api.csproj",
+      "projectUniqueName": "C:\\Users\\10844496\\Documents\\dotnet\\supply_chain_backend\\Backend.Api\\Backend.Api.csproj",
       "projectName": "Backend.Api",
-      "projectPath": "C:\\Users\\10844496\\Documents\\dotnet\\Backend.Api\\Backend.Api.csproj",
+      "projectPath": "C:\\Users\\10844496\\Documents\\dotnet\\supply_chain_backend\\Backend.Api\\Backend.Api.csproj",
       "packagesPath": "C:\\Users\\10844496\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\10844496\\Documents\\dotnet\\Backend.Api\\obj\\",
+      "outputPath": "C:\\Users\\10844496\\Documents\\dotnet\\supply_chain_backend\\Backend.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\10844496\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -3171,11 +3171,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\10844496\\Documents\\dotnet\\Backend.Contracts\\Backend.Contracts.csproj": {
-              "projectPath": "C:\\Users\\10844496\\Documents\\dotnet\\Backend.Contracts\\Backend.Contracts.csproj"
+            "C:\\Users\\10844496\\Documents\\dotnet\\supply_chain_backend\\Backend.Contracts\\Backend.Contracts.csproj": {
+              "projectPath": "C:\\Users\\10844496\\Documents\\dotnet\\supply_chain_backend\\Backend.Contracts\\Backend.Contracts.csproj"
             },
-            "C:\\Users\\10844496\\Documents\\dotnet\\Backend.Data\\Backend.Data.csproj": {
-              "projectPath": "C:\\Users\\10844496\\Documents\\dotnet\\Backend.Data\\Backend.Data.csproj"
+            "C:\\Users\\10844496\\Documents\\dotnet\\supply_chain_backend\\Backend.Data\\Backend.Data.csproj": {
+              "projectPath": "C:\\Users\\10844496\\Documents\\dotnet\\supply_chain_backend\\Backend.Data\\Backend.Data.csproj"
             }
           }
         }
