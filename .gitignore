@@ -1,0 +1,55 @@
+# Build artifacts
+bin/
+obj/
+*.dll
+*.pdb
+
+
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE settings
+.vscode/
+.idea/
+*.swp
+
+# Logs
+Logs/
+*.log
+
+# Secrets
+appsettings.Development.json
+appsettings.Local.json
+*.secret.json
+
+Migrations/
+
+# NuGet packages
+*.nupkg
+packages/
+*.snupkg
+
+# Publish output
+publish/
+wwwroot/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.old
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Coverage / Test results
+coverage/
+TestResults/
+*.coverage
+*.coveragexml
+
+
+swagger.json
