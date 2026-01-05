@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Backend.Data.Data;
 using Backend.Data.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -48,6 +49,7 @@ public sealed class AuthController : ControllerBase
     }
 
     // Login
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest req)
     {
@@ -66,7 +68,7 @@ public sealed class AuthController : ControllerBase
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, u.username),
-            new Claim(ClaimTypes.NameIdentifier, u.username),
+            new Claim(ClaimTypes.NameIdentifier, u.user_id.ToString()),
             new Claim(ClaimTypes.Email, u.email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };

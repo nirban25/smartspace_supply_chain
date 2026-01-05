@@ -6,6 +6,7 @@ using Backend.Api.Mapping;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,12 +22,14 @@ builder.Services.AddScoped<IReleaseRepository, ReleaseRepository>();
 builder.Services.AddScoped<IAlertRepository, AlertRepository>();
 builder.Services.AddScoped<IAuditRepository, AuditRepository>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(
+    options => options.Filters.Add(new AuthorizeFilter())
+);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "SupplyChain API", Version = "v1" });
-    // JWT support
+
     var scheme = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -34,12 +37,18 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Enter 'Bearer {token}'"
+        Description = "Enter 'Bearer {token}'",
+        Reference = new Microsoft.OpenApi.Models.OpenApiReference
+        {
+            Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+            Id = "Bearer"
+        }
     };
+
     c.AddSecurityDefinition("Bearer", scheme);
     c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
     {
-        { scheme, new string[] { } }
+        { scheme, Array.Empty<string>() }
     });
 });
 
@@ -62,7 +71,24 @@ builder.Services
             ValidIssuer = jwtIssuer,
             ValidAudience = jwtAudience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-            ClockSkew = TimeSpan.FromMinutes(1)
+            ClockSkew = TimeSpan.Zero
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine("JWT Auth failed: ");
+                Console.WriteLine(context.Exception.Message);
+                return Task.CompletedTask;
+            },
+            OnChallenge = context =>
+            {
+                Console.WriteLine("JWT Challenge Error: ");
+                Console.WriteLine(context.Error);
+                Console.WriteLine(context.ErrorDescription);
+                return Task.CompletedTask;
+            }
         };
     });
 

@@ -1,11 +1,11 @@
 using Backend.Data.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Api.Controllers
 {
     [ApiController]
-    [Microsoft.AspNetCore.Authorization.Authorize]
     [Route("api/materials")]
     public sealed class MaterialsController : ControllerBase
     {
@@ -13,9 +13,11 @@ namespace Backend.Api.Controllers
         public MaterialsController(SupplyChainDbContext db) => _db = db;
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
             => Ok(await _db.Materials.OrderBy(m => m.code).ToListAsync());
 
+        [Authorize]
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetOne(Guid id)
         {
