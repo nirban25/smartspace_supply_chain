@@ -1,0 +1,58 @@
+
+<div class="home">
+  <!-- Hero -->
+  <section class="hero card">
+    <h1>P&G Supply Chain</h1>
+    <p class="subtitle">Real‑time visibility and plan compliance for Vallejo operations.</p>
+    <div class="badges">
+      <span class="badge">Pantaco: {{ capacities.pantaco }} RCs</span>
+      <span class="badge">Tacuba: {{ capacities.tacuba }} RCs</span>
+      <span class="badge">Vallejo: {{ capacities.vallejo }} RCs</span>
+      <span class="badge warn">Daily receipts ≤ {{ dailyReceiptLimit }} RCs</span>
+    </div>
+  </section>
+
+  <!-- Operations KPIs (from docs; minimal) -->
+  <section class="card kpis">
+    <div class="grid kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Plan compliance alert</div>
+        <div class="kpi-value">&lt; {{ planComplianceMin }}%</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Empty release target</div>
+        <div class="kpi-value">{{ emptyReleaseTarget }}</div>
+        <div class="kpi-sub">released : unloaded</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Capacity deviation alert</div>
+        <div class="kpi-value">±{{ capacityDeviation }} RCs</div>
+        <div class="kpi-sub">vs. design</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HazMat rule (concise) -->
+  <section class="card note">
+    <strong>HazMat handling:</strong>
+    Sodium, Pasta Calaca, HLAS must be delivered <em>directly</em> to Vallejo—no intermediate storage.
+  </section>
+
+  <!-- Condensed design inventory -->
+  <section class="card">
+    <h2>Design Inventory (Plant)</h2>
+    <ul class="chips compact">
+      <li *ngFor="let d of designInventorySummary">
+        <strong>{{ d.label }}:</strong> {{ d.value }}
+      </li>
+    </ul>
+  </section>
+
+  <!-- Critical Quick Links -->
+<section class="card">
+  <h2>Quick Links</h2>
+  <div class="links-row" role="navigation" aria-label="Quick Links">
+    <a class="tile" *ngFor="let l of links" [routerLink]="l.path">{{ l.label }}</a>
+  </div>
+</section>
+</div>

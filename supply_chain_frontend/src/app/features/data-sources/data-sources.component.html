@@ -1,0 +1,146 @@
+
+<!-- src/app/features/data-sources/data-sources.component.html -->
+<section class="page">
+  <header class="page__header">
+    <h1>Data Sources & Integrations</h1>
+    <p class="subtitle">
+      Configure and monitor ingestion from Inventory Reports, Ferrovalle, HTM, Emails, Teams, and more.
+    </p>
+  </header>
+
+  <!-- Filters -->
+  <form [formGroup]="filterForm" class="filters">
+    <input
+      formControlName="search"
+      type="search"
+      placeholder="Search by name, owner, or description…"
+      aria-label="Search"
+    />
+
+    <select formControlName="category" aria-label="Category">
+      <option *ngFor="let cat of categories()" [value]="cat">{{ cat }}</option>
+    </select>
+
+    <label class="checkbox">
+      <input type="checkbox" formControlName="enabledOnly" />
+      Enabled only
+    </label>
+  </form>
+
+  <!-- Category chips -->
+  <div class="chips">
+    <span class="chip">Inventory: {{ countByCategory('Inventory') }}</span>
+    <span class="chip">Transit: {{ countByCategory('Transit') }}</span>
+    <span class="chip">Shipment: {{ countByCategory('Shipment') }}</span>
+    <span class="chip">Compliance: {{ countByCategory('Compliance') }}</span>
+    <span class="chip">Email: {{ countByCategory('Email') }}</span>
+    <span class="chip">Excel: {{ countByCategory('Excel') }}</span>
+    <span class="chip">Collaboration: {{ countByCategory('Collaboration') }}</span>
+    <span class="chip">Portal: {{ countByCategory('Portal') }}</span>
+  </div>
+
+  <!-- Data Sources list -->
+  <section class="card">
+    <h2>Sources</h2>
+
+    <div class="table" role="table" aria-label="Data sources">
+      <div class="row header" role="row">
+        <div class="cell">Name</div>
+        <div class="cell">Category</div>
+        <div class="cell">Origin</div>
+        <div class="cell hide-md">Owner</div>
+        <div class="cell hide-md">Frequency</div>
+        <div class="cell grow">Endpoint</div>
+        <div class="cell center">Status</div>
+        <div class="cell center">Actions</div>
+      </div>
+
+      <ng-container *ngFor="let s of filteredSources">
+        <div class="row body" role="row">
+          <div class="cell">
+            <div class="cell__title">{{ s.name }}</div>
+            <div class="cell__desc">{{ s.description }}</div>
+          </div>
+
+          <div class="cell">
+            <span class="tag">{{ s.category }}</span>
+          </div>
+
+          <div class="cell">{{ s.origin }}</div>
+
+          <div class="cell hide-md">{{ s.owner || '—' }}</div>
+
+          <div class="cell hide-md">{{ s.frequency || '—' }}</div>
+
+          <div class="cell grow mono">{{ s.endpoint }}</div>
+
+          <div class="cell center">
+            <span class="status" [class.ok]="s.enabled" [class.pause]="!s.enabled">
+              {{ s.enabled ? 'enabled' : 'disabled' }}
+            </span>
+          </div>
+
+          <div class="cell center">
+            <button class="btn btn--ghost" (click)="toggleSource(s.id)">
+              {{ s.enabled ? 'Disable' : 'Enable' }}
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </section>
+
+  <!-- Integrations list -->
+  <section class="card" *ngIf="showConnectors">
+    <h2>Integrations</h2>
+
+    <div class="table" role="table" aria-label="Integration connectors">
+      <div class="row header" role="row">
+        <div class="cell">Name</div>
+        <div class="cell">Type</div>
+        <div class="cell hide-md">Schedule</div>
+        <div class="cell grow">Sources</div>
+        <div class="cell">Destination</div>
+        <div class="cell center">Status</div>
+        <div class="cell center">Actions</div>
+      </div>
+
+      <ng-container *ngFor="let c of connectors">
+        <div class="row body" role="row">
+          <div class="cell">
+            <div class="cell__title">{{ c.name }}</div>
+            <div class="cell__desc mono">Last run: {{ c.lastRun || '—' }}</div>
+          </div>
+
+          <div class="cell"><span class="tag">{{ c.type }}</span></div>
+
+          <div class="cell hide-md mono">{{ c.schedule || '—' }}</div>
+
+          <div class="cell grow">
+            <ul class="plain">
+              <li *ngFor="let s of sourcesFor(c)">
+                <span class="mono">{{ s.id }}</span> — {{ s.name }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="cell mono">{{ c.destination }}</div>
+
+          <div class="cell center">
+            <span class="status" [class.ok]="c.status === 'active'"
+                                 [class.pause]="c.status === 'paused'"
+                                 [class.err]="c.status === 'error'">
+              {{ c.status }}
+            </span>
+          </div>
+
+          <div class="cell center">
+            <button class="btn btn--ghost" (click)="toggleConnector(c.id)">
+              {{ c.status === 'active' ? 'Pause' : 'Activate' }}
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </section>
+</section>

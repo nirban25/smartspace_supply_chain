@@ -1,0 +1,121 @@
+
+<!-- src/app/features/transit-space/transit-dashboard/transit-dashboard.html -->
+<section class="ts-card-wrap">
+  <!-- Header: title left, small Material dropdown right -->
+  <header class="ts-card-header">
+    <h2>Transit space</h2>
+    <div class="ts-header-right">
+    </div>
+  </header>
+
+  <div class="ts-container" id="ts-root">
+    <!-- Filters row exactly like screenshot -->
+    <div class="ts-filters">
+      <label>
+        Material:
+        <select id="ts-filter-material">
+          <option>All</option>
+          <option>Sodium sulfate</option>
+          <option>HLAS</option>
+          <option>Dense carbonate</option>
+          <option>Soda</option>
+          <option>Light carbonate</option>
+          <option>Pasta Surflex</option>
+        </select>
+      </label>
+
+      <label>
+        Node:
+        <select id="ts-filter-node">
+          <option>All</option>
+          <option>Pantaco</option>
+          <option>Tacuba</option>
+          <option>Vallejo</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- KPI cards (3 cards) -->
+    <div class="kpi-row" id="ts-kpis">
+      <!-- injected by TS -->
+    </div>
+
+    <!-- Arrival Forecast -->
+    <div class="ts-panel table-theme-yellow table-card">
+      <h3>Arrival Forecast</h3>
+
+      <!-- Reflection banner (counts + selected filters) -->
+      <div id="ts-arrivals-reflection" class="ts-inline-banner banner banner--yellow" aria-live="polite"></div>
+
+      <div class="table-wrap">
+        <table class="ts-table" id="ts-arrivals-table">
+          <thead>
+            <tr>
+              <th>Railcar</th>
+              <th>Material</th>
+              <th>InboundNode</th>
+              <th>ETA</th>
+            </tr>
+          </thead>
+          <tbody><!-- injected by TS --></tbody>
+        </table>
+      </div>
+      <small class="note ts-note"></small>
+    </div>
+
+    <!-- Alert Center -->
+    <div class="ts-panel">
+      <h3>Alert Center</h3>
+
+      <!-- Alert reflection like screenshot -->
+      <div id="ts-alert-summary" class="ts-inline-banner"></div>
+
+      <!-- Mini alert table like screenshot -->
+      <table class="ts-table ts-alert-mini" id="ts-alert-mini-table">
+        <thead>
+          <tr>
+            <th>Railcar</th>
+            <th>Inbound Node</th>
+            <th>ETA</th>
+          </tr>
+        </thead>
+        <tbody><!-- injected by TS --></tbody>
+      </table>
+
+      <!-- Classic alert list + acknowledge -->
+      <ul class="ts-alerts" id="ts-alerts"></ul>
+
+      <small class="ts-note">
+        * Arrivals into Pantaco are included in the Pantaco+Arrivals capacity rule.
+      </small>
+    </div>
+
+    <!-- Status & Excel (two-column) -->
+    <div class="ts-grid">
+      <div class="ts-panel">
+        <h3>Data Source Status</h3>
+        <ul id="ts-data-source">
+          <li>Ferrovalle connection <strong id="ts-ds-conn">—</strong></li>
+          <li>Last Excel ingest <span id="ts-ds-last">—</span></li>
+          <li>Next scheduled run <span id="ts-ds-next">—</span> (06:00 daily)</li>
+          <li>Multi-user credentials <span id="ts-ds-multi">—</span></li>
+        </ul>
+      </div>
+
+      <div class="ts-panel">
+        <h3>Excel Ingest Status</h3>
+        <div class="ts-ingest-row">
+          <input type="file" id="ts-excel-input" accept=".xlsx,.xls,.csv,.json" />
+          <button class="btn" id="ts-ack-demo">Acknowledge</button>
+        </div>
+        <small id="ts-ingest-foot" class="ts-note"></small>
+      </div>
+    </div>
+
+    <!-- Audit Log -->
+    <div class="ts-panel">
+      <h3>Audit Log</h3>
+      <ul id="ts-audit"></ul>
+    </div>
+  </div>
+</section>

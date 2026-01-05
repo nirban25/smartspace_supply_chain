@@ -1,0 +1,225 @@
+
+<div class="admin">
+  <header class="admin__header">
+    <h1>Admin Configuration</h1>
+
+    <div class="admin__summary">
+      <span>Total designed capacity across nodes: <strong>{{ totalNodeCapacity() }}</strong></span>
+
+      <label class="switch">
+        <input type="checkbox" [formControl]="form.controls.hazardousDirectOnly" />
+        <span class="slider"></span>
+      </label>
+      <span class="switch__label">Hazardous materials must be direct-to-plant</span>
+    </div>
+
+    <div class="admin__actions">
+      <button class="btn primary" (click)="publishUnloadingPlan()">Publish Daily Unloading Plan</button>
+    </div>
+  </header>
+
+  <!-- Node capacities -->
+  <section class="card">
+    <div class="card__title">
+      <h2>Node Capacities</h2>
+      <button class="btn" (click)="addNodeCapacity()">+ Add Node</button>
+    </div>
+
+    <div class="table">
+      <div class="table__header">
+        <div>Node</div>
+        <div>Designed Capacity</div>
+        <div>Effective From</div>
+        <div>Effective To</div>
+        <div></div>
+      </div>
+
+      <div class="table__row" *ngFor="let nc of nodeCapacitiesArray.controls; let i = index" [formGroup]="nc">
+        <div>
+          <select formControlName="nodeName">
+            <option value="Pantaco">Pantaco</option>
+            <option value="Tacuba">Tacuba</option>
+            <option value="Vallejo">Vallejo</option>
+          </select>
+        </div>
+        <div>
+          <input type="number" min="1" formControlName="designedCapacity" />
+          <div class="error" *ngIf="nc.controls.designedCapacity.invalid">Required (≥ 1)</div>
+        </div>
+        <div><input type="date" formControlName="effectiveFrom" /></div>
+        <div><input type="date" formControlName="effectiveTo" /></div>
+        <div><button class="btn danger" (click)="removeNodeCapacity(i)">Remove</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Materials -->
+  <section class="card">
+    <div class="card__title">
+      <h2>Material Design Inventory</h2>
+      <button class="btn" (click)="addMaterial()">+ Add Material</button>
+    </div>
+
+    <div class="table">
+      <div class="table__header">
+        <div>Material</div>
+        <div>Normal Units</div>
+        <div>Safety Stock</div>
+        <div>Effective From</div>
+        <div>Effective To</div>
+        <div></div>
+      </div>
+
+      <div class="table__row" *ngFor="let md of materialsArray.controls; let i = index" [formGroup]="md">
+        <div>
+          <select formControlName="materialName">
+            <option>Sodium sulfate</option>
+            <option>Dense carbonate</option>
+            <option>Light carbonate</option>
+            <option>Pasta</option>
+            <option>HLAS</option>
+            <option>Soda</option>
+          </select>
+        </div>
+        <div>
+          <input type="number" min="0" formControlName="normalUnits" />
+          <div class="error" *ngIf="md.controls.normalUnits.invalid">Required (≥ 0)</div>
+        </div>
+        <div>
+          <input type="number" min="0" formControlName="safetyStock" />
+          <div class="error" *ngIf="md.controls.safetyStock.invalid">Required (≥ 0)</div>
+        </div>
+        <div><input type="date" formControlName="effectiveFrom" /></div>
+        <div><input type="date" formControlName="effectiveTo" /></div>
+        <div><button class="btn danger" (click)="removeMaterial(i)">Remove</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Alerts -->
+  <section class="card">
+    <div class="card__title">
+      <h2>Alert Policies</h2>
+      <button class="btn" (click)="addAlert()">+ Add Policy</button>
+    </div>
+
+    <div class="table">
+      <div class="table__header">
+        <div>Category</div>
+        <div>Rule Expression</div>
+        <div>Threshold</div>
+        <div>Severity</div>
+        <div>Channel</div>
+        <div>Recipients</div>
+        <div>Enabled</div>
+        <div>Debounce (min)</div>
+        <div>Escalation</div>
+        <div></div>
+      </div>
+
+      <div class="table__row" *ngFor="let ap of alertsArray.controls; let i = index" [formGroup]="ap">
+        <div>
+          <select formControlName="category">
+            <option>Compliance</option>
+            <option>Inventory</option>
+            <option>Transit</option>
+            <option>EmptyRelease</option>
+            <option>DailyReceipt</option>
+          </select>
+        </div>
+        <div>
+          <input type="text" formControlName="ruleExpr" placeholder="e.g., totalInPlant > 32" />
+          <div class="error" *ngIf="ap.controls.ruleExpr.invalid">Min length 3</div>
+        </div>
+        <div><input type="number" formControlName="threshold" /></div>
+        <div>
+          <select formControlName="severity">
+            <option>Info</option>
+            <option>Warn</option>
+            <option>Critical</option>
+          </select>
+        </div>
+        <div>
+          <select formControlName="channel">
+            <option>Teams</option>
+            <option>Email</option>
+            <option>Both</option>
+          </select>
+        </div>
+        <div><input type="text" formControlName="recipients" placeholder="group ids/emails" /></div>
+        <div><input type="checkbox" formControlName="enabled" /></div>
+        <div><input type="number" min="0" formControlName="debounceMinutes" /></div>
+        <div><input type="text" formControlName="escalationPath" /></div>
+        <div><button class="btn danger" (click)="removeAlert(i)">Remove</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Connectors -->
+  <section class="card">
+    <div class="card__title">
+      <h2>Connectors</h2>
+      <button class="btn" (click)="addConnector()">+ Add Connector</button>
+    </div>
+
+    <div class="table">
+      <div class="table__header">
+        <div>Type</div>
+        <div>Owner</div>
+        <div>Schedule</div>
+        <div>Enabled</div>
+        <div>Settings (JSON)</div>
+        <div></div>
+        <div></div>
+      </div>
+
+      <div class="table__row" *ngFor="let cn of connectorsArray.controls; let i = index" [formGroup]="cn">
+        <div>
+          <select formControlName="type">
+            <option>Email</option>
+            <option>Excel</option>
+            <option>FV</option>
+            <option>Teams</option>
+            <option>SharePoint</option>
+          </select>
+        </div>
+        <div><input type="text" formControlName="owner" /></div>
+        <div><input type="text" formControlName="schedule" placeholder="e.g., 06:00 or on-demand" /></div>
+        <div><input type="checkbox" formControlName="enabled" /></div>
+        <div><textarea formControlName="settings" placeholder='{"subjects":["..."]}'></textarea></div>
+        <br>
+        <div><button class="btn" (click)="testConnector(i)">Test</button></div>
+        <div><button class="btn danger" (click)="removeConnector(i)">Remove</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RBAC -->
+  <section class="card">
+    <div class="card__title">
+      <h2>Role Assignments (RBAC)</h2>
+      <button class="btn" (click)="addRole()">+ Assign Role</button>
+    </div>
+
+    <div class="table">
+      <div class="table__header">
+        <div>User ID</div>
+        <div>Role</div>
+        <div></div>
+      </div>
+
+      <div class="table__row" *ngFor="let ra of rolesArray.controls; let i = index" [formGroup]="ra">
+        <div><input type="text" formControlName="userId" placeholder="GUID or UPN" /></div>
+        <div>
+          <select formControlName="roleName">
+            <option>Admin</option>
+            <option>Planner</option>
+            <option>Operator</option>
+            <option>Auditor</option>
+          </select>
+        </div>
+        <div><button class="btn danger" (click)="removeRole(i)">Remove</button></div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,95 @@
+
+<div class="nodes">
+  <header class="nodes__header">
+    <h2>Nodes — Pantaco &amp; Tacuba</h2>
+    <p class="muted">Real-time node visibility, transit &amp; plan compliance</p>
+  </header>
+
+  <!-- Metrics cards -->
+  <section class="grid">
+    <article class="card" *ngFor="let m of metrics(); trackBy: trackByNode">
+      <header class="card__header">
+        <h3>{{ m.node }}</h3>
+        <span class="badge"
+              [class.badge--ok]="m.utilizationPct <= 100"
+              [class.badge--over]="m.utilizationPct > 100">
+          Utilization: {{ m.utilizationPct }}%
+        </span>
+      </header>
+
+      <div class="card__body">
+        <div class="kpis">
+          <div class="kpi">
+            <div class="kpi__label">Total RCs</div>
+            <div class="kpi__value">{{ m.total }}</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi__label">Capacity</div>
+            <div class="kpi__value">{{ m.capacity }}</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi__label">Arrivals (forecast)</div>
+            <div class="kpi__value">{{ m.arrivals }}</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi__label">Projected</div>
+            <div class="kpi__value">{{ m.projected }}</div>
+          </div>
+          <div class="kpi" *ngIf="m.compliancePct !== null">
+            <div class="kpi__label">Plan compliance</div>
+            <div class="kpi__value">{{ m.compliancePct }}%</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi__label">Hazardous at node</div>
+            <div class="kpi__value">{{ m.hazardousSum }}</div>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress">
+          <div class="progress__bar"
+               [style.width.%]="clampPct(m.utilizationPct)"
+               [class.progress__bar--over]="m.utilizationPct > 100">
+          </div>
+        </div>
+
+        <!-- Material breakdown -->
+        <div class="materials">
+          <h4>By material</h4>
+          <ul class="materials__list">
+            <li *ngFor="let mat of materialsOrder">
+              <span class="materials__name">{{ materialLabels[mat] }}</span>
+              <span class="materials__qty">
+                {{ getMaterialQtyNode(m.node, mat) }}
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <p class="muted">Last updated: {{ m.lastUpdatedIso | date:'short' }}</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- Alerts -->
+  <section class="alerts" *ngIf="alerts().length">
+    <h3>Alerts</h3>
+    <ul class="alerts__list">
+      <li *ngFor="let a of alerts()"
+          class="alert"
+          [ngClass]="cssForSeverity(a.severity)">
+        <div class="alert__title">{{ a.node }} — {{ a.code }}</div>
+        <div class="alert__msg">{{ a.message }}</div>
+        <div class="alert__time">{{ a.whenIso | date:'short' }}</div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Audit log (latest entries first) -->
+  <section class="audit">
+    <h3>Traceability (audit)</h3>
+    <ol>
+      <li *ngFor="let line of auditLog()">{{ line }}</li>
+    </ol>
+  </section>
+</div>

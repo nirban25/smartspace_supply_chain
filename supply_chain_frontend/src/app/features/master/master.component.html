@@ -1,0 +1,67 @@
+
+<header class="appbar">
+  <button class="icon-btn" aria-label="Menu" (click)="toggleSideNav()">
+    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+  </button>
+
+  <div class="app-title"></div>
+
+  <div class="header-actions">
+    <a class="header-link" routerLink="/home" routerLinkActive="active" aria-label="Home">Home</a>
+    <a class="header-link" routerLink="/visibility/map" routerLinkActive="active" aria-label="Map">Map</a>
+
+    <div class="app-actions">
+      <img
+        src="assets/profile.png"
+        alt="Profile"
+        class="profile-image"
+        (click)="toggleProfile()"
+        style="cursor:pointer;"
+      />
+
+      <div class="profile-menu" *ngIf="profileOpen()" role="menu" aria-label="Profile menu" (keydown.escape)="closeProfile()">
+        <button class="menu-item" role="menuitem" (click)="navigateAndClose('/account/profile')">My Profile</button>
+        <button class="menu-item" role="menuitem" (click)="navigateAndClose('/account/settings')">Settings</button>
+        <hr />
+        <button class="menu-item danger" role="menuitem" (click)="navigateAndClose('/login')">Sign out</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<aside class="sidenav" [class.open]="sideOpen()">
+  <div class="sidenav-header">
+    <span class="sidenav-title"></span>
+  </div>
+
+  <nav class="nav-groups mat">
+    <mat-accordion displayMode="flat">
+      <mat-expansion-panel *ngFor="let group of navGroups">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon aria-hidden="true" style="margin-right:8px;">{{ group.icon }}</mat-icon>
+            {{ group.label }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="nav-group-children">
+          <a
+            *ngFor="let child of group.children"
+            [routerLink]="child.route"
+            routerLinkActive="active"
+            class="nav-link"
+            (click)="closeSideNav()"
+          >
+            <span class="nav-label">{{ child.label }}</span>
+          </a>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </nav>
+</aside>
+
+<div class="overlay" *ngIf="sideOpen()" (click)="closeSideNav()"></div>
+
+<main class="content" (click)="onContentClick()">
+  <router-outlet></router-outlet>
+</main>

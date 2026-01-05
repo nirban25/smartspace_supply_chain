@@ -1,0 +1,220 @@
+
+/* =========================================================
+   Transit Dashboard — Plan-style Yellow Theme
+   ========================================================= */
+
+@use "sass:color";
+
+/* ===== Theme Variables ===== */
+$bg-page: #fff5d6;        // pale yellow
+$bg-card: #fffef2;        // light cream
+$border: #d5c46d;         // warm yellow-brown
+$border-light: #efe6b9;
+$text-main: #1f1d12;
+$text-muted: #5c5a4a;
+$shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+
+$accent-ok: #1e8e3e;
+$accent-warn: #f9ab00;
+$accent-crit: #c5221f;
+
+/* ===== Page Shell ===== */
+.transit-dashboard {
+  background: $bg-page;
+  min-height: 100%;
+  padding: 16px;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: $text-main;
+}
+
+/* ===== Header ===== */
+.ts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+
+  h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
+    color: $text-main;
+  }
+
+  .meta {
+    font-size: 14px;
+    color: $text-muted;
+  }
+
+  .actions .btn {
+    background: $bg-card;
+    border: 1px solid $border;
+    color: $text-main;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-left: 8px;
+
+    &:hover {
+      background: #fff4c1;
+    }
+  }
+}
+
+/* ===== KPI Grid ===== */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+
+  .kpi-card {
+    background: $bg-card;
+    border: 1px solid $border;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: $shadow;
+
+    .label {
+      font-size: 12px;
+      color: $text-muted;
+    }
+
+    .value {
+      font-size: 20px;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    &.warning {
+      border-color: $accent-crit;
+      background: #ffebee;
+    }
+
+    &.forecast {
+      border-color: $accent-warn;
+      background: #fff3e0;
+    }
+  }
+}
+
+/* ===== Panels ===== */
+.ts-panel {
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: 10px;
+  padding: 12px;
+  margin: 14px 0;
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.02);
+
+  .panel-title {
+    font-weight: 800;
+    color: $text-main;
+    margin-bottom: 8px;
+    border-bottom: 1px solid $border-light;
+    padding-bottom: 6px;
+  }
+}
+
+/* ===== Table ===== */
+.ts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  thead th {
+    background: #fff4c1;
+    color: $text-main;
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid $border-light;
+    font-weight: 700;
+  }
+
+  tbody td {
+    padding: 8px;
+    border-bottom: 1px solid $border-light;
+    color: $text-main;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #fff9db;
+  }
+
+  tbody tr:hover {
+    background: #fff4b8;
+  }
+
+  .empty-row {
+    color: #888;
+    font-style: italic;
+  }
+}
+
+/* ===== Alerts ===== */
+.ts-alert {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  border: 1px solid $border;
+  border-left-width: 4px;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: $bg-card;
+
+  &.critical { border-left-color: $accent-crit; }
+  &.warning { border-left-color: $accent-warn; }
+  &.info { border-left-color: $accent-ok; }
+
+  .ts-rule {
+    font-size: 12px;
+    color: $text-muted;
+  }
+}
+
+/* ===== Inputs ===== */
+.input {
+  width: 100%;
+  padding: 6px 8px;
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 6px;
+  font-size: 14px;
+
+  &:focus {
+    outline: none;
+    border-color: #b8a652;
+    box-shadow: 0 0 0 2px rgba(184, 166, 82, 0.15);
+  }
+}
+
+/* ===== Badges ===== */
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-right: 6px;
+  border: 1px solid;
+
+  &.ok {
+    background: #ecffe6;
+    color: #215c26;
+    border-color: #cfe6a8;
+    font-weight: 600;
+  }
+
+  &.warn {
+    background: #fff0da;
+    color: #8a4b00;
+    border-color: #ffd7a3;
+    font-weight: 700;
+  }
+}
+
+/* ===== Responsive Tweaks ===== */
+@media (max-width: 640px) {
+  .ts-header h2 { font-size: 22px; }
+  .ts-table thead th,
+  .ts-table tbody td { padding: 6px; }
+}

@@ -1,0 +1,75 @@
+
+// :host {
+//   display: block;
+//   height: 100%;
+// }
+
+// .full-map {
+//   width: 100vw;
+//   height: calc(100vh - 56px); /* Adjust 56px to your header height */
+//   margin: 0;
+//   padding: 0;
+// }
+
+
+
+/* map.component.scss */
+
+/* Ensure the page can grow to full viewport height */
+:host {
+  display: block;
+}
+
+/* Optional alert styling at the top */
+.map-alert {
+  position: fixed;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: min(92vw, 640px);
+  padding: 0.75rem 1rem;
+  background: #fff3cd;
+  color: #2d2d2d;
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  z-index: 1000;
+}
+
+/* Full-page container: uses dynamic viewport units to avoid mobile browser chrome issues */
+.map-page {
+  /* 100dvh accounts for mobile browser UI; falls back to 100vh elsewhere */
+  min-height: 100dvh;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The map itself fills remaining space */
+.map-canvas {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+}
+
+/* If your app has a fixed header (e.g., in MasterComponent), 
+   you can compensate with a CSS variable for header height and clamp the map area. */
+:root {
+  --header-height: 0px; /* set to e.g. 64px if there’s a fixed top bar on this page */
+}
+
+/* When used under a shell with fixed header, uncomment this rule:
+.map-page {
+  padding-top: var(--header-height);
+}
+*/
+
+/* Optional: improve leaflet default cursor and touch behavior */
+.leaflet-container {
+  touch-action: pan-x pan-y;
+  cursor: grab;
+}
+.leaflet-container:active {
+  cursor: grabbing;
+}

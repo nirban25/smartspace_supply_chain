@@ -1,0 +1,54 @@
+
+<div class="help-container">
+  <h2>Help Center</h2>
+
+  <input
+    type="text"
+    placeholder="Search help topics..."
+    [(ngModel)]="searchQuery"
+    class="help-search"
+    aria-label="Search help topics"
+  />
+
+  <ul class="topic-list" role="list">
+    <li
+      *ngFor="let topic of filteredTopics"
+      role="button"
+      tabindex="0"
+      (click)="toggleExpand(topic)"
+      (keydown)="onKeyActivate(topic, $event)"
+      [attr.aria-expanded]="isExpanded(topic.id)"
+      [class.expanded]="isExpanded(topic.id)"
+      class="topic-item"
+    >
+      <div class="topic-header">
+        <strong class="topic-title">{{ topic.title }}</strong>
+        <span class="topic-summary">{{ topic.summary }}</span>
+      </div>
+
+      <!-- Inline expansion; appears directly below the clicked option -->
+      <section
+        *ngIf="isExpanded(topic.id)"
+        class="topic-details-inline"
+        role="region"
+        [attr.aria-label]="topic.title + ' details'"
+      >
+        <button
+          class="close-btn"
+          (click)="close(topic.id, $event)"
+          aria-label="Close details"
+        >×</button>
+
+        <h3 class="details-title">{{ topic.title }}</h3>
+        <p class="details-summary">{{ topic.summary }}</p>
+
+        <div *ngIf="topic.troubleshooting?.length" class="details-block">
+          <h4>Troubleshooting</h4>
+          <ul>
+            <li *ngFor="let step of topic.troubleshooting">{{ step }}</li>
+          </ul>
+        </div>
+      </section>
+    </li>
+  </ul>
+</div>

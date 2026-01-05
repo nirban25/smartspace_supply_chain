@@ -1,0 +1,69 @@
+
+<div class="card">
+  <h1>Settings</h1>
+
+  <!-- Notification preferences -->
+  <div class="setting">
+    <div class="text">
+      <div class="label">Notifications</div>
+      <div class="helper">Select how you want to be notified.</div>
+    </div>
+    <div class="toggle-group">
+      <label><input type="checkbox" [(ngModel)]="notifications.email"> Email</label>
+      <label><input type="checkbox" [(ngModel)]="notifications.sms"> SMS</label>
+      <label><input type="checkbox" [(ngModel)]="notifications.inApp"> In-app</label>
+    </div>
+  </div>
+
+  <!-- Existing toggles -->
+  <div class="setting">
+    <div class="text">
+      <div class="label">Operations KPI strip</div>
+      <div class="helper">Show plan compliance and capacity deviation on Home.</div>
+    </div>
+    <label class="toggle"><input type="checkbox" [(ngModel)]="kpiStrip"></label>
+  </div>
+
+  <div class="setting">
+    <div class="text">
+      <div class="label">HazMat note</div>
+      <div class="helper">Show direct delivery rule for Sodium, Pasta Calaca, HLAS.</div>
+    </div>
+    <label class="toggle"><input type="checkbox" [(ngModel)]="showHazmatNote"></label>
+  </div>
+
+  <div class="setting">
+    <div class="text">
+      <div class="label">Compact quick links</div>
+      <div class="helper">Use tighter spacing for Home quick links row.</div>
+    </div>
+    <label class="toggle"><input type="checkbox" [(ngModel)]="compactQuickLinks"></label>
+  </div>
+
+  <!-- New toggles -->
+  <div class="setting">
+    <div class="text">
+      <div class="label">Advanced analytics</div>
+      <div class="helper">Enable additional charts and KPIs in Reports.</div>
+    </div>
+    <label class="toggle"><input type="checkbox" [(ngModel)]="showAdvancedAnalytics"></label>
+  </div>
+
+  <div class="setting">
+    <div class="text">
+      <div class="label">Auto-refresh dashboard</div>
+      <div class="helper">Refresh dashboard data automatically in the background.</div>
+    </div>
+    <label class="toggle"><input type="checkbox" [(ngModel)]="autoRefreshDashboard"></label>
+  </div>
+
+  <div class="setting">
+    <div class="text">
+      <div class="label">Increase font size</div>
+      <div class="helper">Accessibility: larger text sizes.</div>
+    </div>
+    <label class="toggle"><input type="checkbox" [(ngModel)]="increaseFontSize"></label>
+  </div>
+
+  <p class="note">Settings are saved locally. For org-wide policies, contact your admin.</p>
+</div>

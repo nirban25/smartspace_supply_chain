@@ -1,0 +1,31 @@
+
+<div class="alerts">
+  <h1 class="alerts__title">Alerts & Notifications</h1>
+
+  <!-- Toolbar moved here, right under the header -->
+  <div class="alerts__toolbar">
+    <button class="btn" (click)="success('Daily plan exported to JSON', 'Export')">Success</button>
+    <button class="btn" (click)="warning('Transit space nearing capacity (Pantaco)', 'Capacity Warning', { autoDismiss: false })">Warning</button>
+    <button class="btn" (click)="error('Hazardous receipt exceeds design limits', 'Critical', { autoDismiss: false })">Error</button>
+    <button class="btn btn--ghost" (click)="clear()">Clear</button>
+  </div>
+  <br>
+
+  <!-- Alerts list follows below the toolbar -->
+  <div class="banner-stack" [class.is-collapsed]="collapsed" aria-label="Alerts" aria-live="polite">
+    <article *ngFor="let a of alerts()" class="alert alert--{{a.kind}}" role="alert">
+      <div class="alert__icon" aria-hidden="true">
+        <span *ngIf="a.kind==='info'">ℹ️</span>
+        <span *ngIf="a.kind==='success'">✅</span>
+        <span *ngIf="a.kind==='warning'">⚠️</span>
+        <span *ngIf="a.kind==='error'">⛔</span>
+      </div>
+      <div class="alert__body">
+        <h4 *ngIf="a.title" class="alert__title">{{ a.title }}</h4>
+        <p class="alert__msg">{{ a.message }}</p>
+      </div>
+
+      <button class="alert__close" (click)="remove(a.id)" aria-label="Dismiss">✖</button>
+    </article>
+  </div>
+</div>

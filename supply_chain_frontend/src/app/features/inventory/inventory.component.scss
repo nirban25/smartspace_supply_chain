@@ -1,0 +1,136 @@
+
+/* Full page background and centering */
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff8dc; /* Light yellow */
+  padding: 1rem;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* White card */
+.inventory-card {
+  width: 100%;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  padding: 1.5rem;
+
+  h1 {
+    text-align: center;
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  .timestamp {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+
+  /* Yellow table with black borders */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff8dc;
+    border: 2px solid #000;
+
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #000;
+      text-align: left;
+    }
+
+    th {
+      background-color: #fdf6e3;
+      font-weight: bold;
+      color: #000;
+    }
+
+    tr.over {
+      background-color: #ffe0e0;
+    }
+
+    .alert {
+      color: #b91c1c;
+      font-weight: bold;
+    }
+
+    .ok {
+      color: #065f46;
+      font-weight: bold;
+    }
+
+    .hazard {
+      color: #b45309;
+      font-weight: bold;
+    }
+  }
+
+  /* Alerts section */
+  .alerts {
+    margin-top: 1rem;
+    background: #fff8dc;
+    padding: 0.75rem;
+    border: 1px solid #000;
+    border-radius: 6px;
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      color: #000;
+      font-weight: bold;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      color: #b91c1c;
+      font-weight: 600;
+    }
+  }
+
+  /* Action buttons */
+  .actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      background: #2563eb;
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+  }
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .inventory-card {
+    padding: 1rem;
+
+    table th, table td {
+      padding: 0.5rem;
+      font-size: 0.85rem;
+    }
+  }
+}

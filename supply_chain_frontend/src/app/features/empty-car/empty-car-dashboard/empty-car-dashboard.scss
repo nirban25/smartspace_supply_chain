@@ -1,0 +1,142 @@
+
+/* ---------- Light Yellow Theme Tokens ---------- */
+:host {
+  --erc-bg: #fff9db;            /* card background: pastel yellow */
+  --erc-border: #f2e6a3;        /* soft yellow border */
+  --erc-surface: #fffbe6;       /* surface/kpi tiles */
+  --erc-text: #3b3a26;          /* primary text (dark olive) */
+  --erc-subtext: #6b6a4d;       /* secondary text */
+  --erc-accent: #b38f00;        /* accent (buttons, headers) */
+  --erc-accent-contrast: #1a1a1a;
+  --erc-alert-bg: #fff2cc;      /* alert background */
+  --erc-alert-border: #f1d87a;  /* alert border */
+  --erc-critical: #9a0007;      /* critical red (WCAG compliant) */
+  --erc-good: #0b7a34;          /* good/ok green */
+  --erc-neutral: #8a6d00;       /* neutral amber */
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #000;
+  margin-bottom: 12px;
+}
+
+/* Optional: dark mode tweak */
+@media (prefers-color-scheme: dark) {
+  :host {
+    --erc-bg: #3a3300;
+    --erc-border: #5b5105;
+    --erc-surface: #4a4204;
+    --erc-text: #fff7cc;
+    --erc-subtext: #e7dfac;
+    --erc-accent: #ffd84d;
+    --erc-accent-contrast: #1a1a1a;
+    --erc-alert-bg: #5a4e02;
+    --erc-alert-border: #907f08;
+    --erc-critical: #ffb3b8;
+    --erc-good: #a8e6b2;
+    --erc-neutral: #ffe08a;
+  }
+}
+
+/* ---------- Outer Card (neutral) ---------- */
+.empty-release-card {
+  border: 1px solid #e0e0e0;     /* neutral border */
+  border-radius: 12px;
+  padding: 16px;
+  background: #ffffff;           /* neutral background */
+  color: #222;                   /* neutral text color */
+}
+
+/* ---------- Header & Buttons ---------- */
+.erc-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.erc-actions .btn { margin-left: 8px; }
+.btn { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--erc-border); cursor: pointer; }
+
+.btn.primary {
+  background: var(--erc-accent);
+  color: var(--erc-accent-contrast);
+  border-color: var(--erc-accent);
+}
+.btn.primary:hover { filter: brightness(0.95); }
+
+.btn.secondary {
+  background: var(--erc-surface);
+  color: var(--erc-text);
+}
+.btn.secondary:hover { filter: brightness(0.97); }
+
+/* ---------- KPIs ---------- */
+.erc-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+.kpi { background: var(--erc-surface); border-radius: 8px; padding: 12px; border: 1px solid var(--erc-border); }
+.kpi-label { font-size: 12px; color: var(--erc-subtext); }
+.kpi-value { font-size: 24px; font-weight: 600; color: var(--erc-text); }
+.kpi-value.good { color: var(--erc-good); }
+.kpi-value.bad  { color: var(--erc-critical); }
+.kpi-sub { font-size: 11px; color: var(--erc-subtext); }
+
+/* ---------- Alert bar ---------- */
+.erc-alert {
+  margin-top: 12px;
+  background: #fffdf0;
+  border: 1px solid #f4cccc;
+  color: black;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* ---------- Meta & Sources ---------- */
+.erc-meta { margin-top: 12px; font-size: 13px; color: var(--erc-text); }
+.hint { color: var(--erc-subtext); margin-left: 6px; }
+.erc-sources { margin-top: 8px; }
+.erc-sources a { color: var(--erc-accent); }
+
+/* ---------- Alerts Panel ---------- */
+.alerts-panel { margin-top: 16px; }
+.alerts-list { list-style: none; padding-left: 0; }
+.alert {
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: var(--erc-surface);
+  border: 1px solid var(--erc-border);
+  color: var(--erc-text);
+}
+.alert.info     { border-left: 4px solid var(--erc-accent); }
+.alert.warning  { border-left: 4px solid var(--erc-neutral); }
+.alert.critical { border-left: 4px solid var(--erc-critical); }
+.alert .time { font-size: 12px; color: var(--erc-subtext); margin-right: 10px; }
+.alert .msg  { font-size: 14px; }
+
+/* ---------- Release Form ---------- */
+.release-form {
+  margin-top: 16px;
+  border: 1px dashed var(--erc-border);
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--erc-text);
+}
+
+.release-form input,
+.release-form textarea {
+  width: 100%;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  padding: 8px;
+  border: 1px solid var(--erc-border);
+  border-radius: 6px;
+  background: #fffdf0;
+  color: var(--erc-text);
+}
+.release-form .hint { font-size: 12px; color: var(--erc-subtext); margin-top: 8px; }
+
+/* ---------- Activity Log ---------- */
+.activity-log { margin-top: 16px; }
+.activity-log ul { list-style: none; padding-left: 0; }
+.activity-log li { padding: 6px 0; border-bottom: 1px solid var(--erc-border); color: var(--erc-text); }

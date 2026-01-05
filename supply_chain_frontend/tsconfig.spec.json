@@ -1,0 +1,15 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "vitest/globals"
+    ]
+  },
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.spec.ts"
+, "src/app/features/unloading-plan/unloading-plan.spec.ts", "src/app/fesrc/app/features/transit/transit.spec.ts/reports/reporsrc/app/features/reports/reports.spec.tsreceipts.spec.src/app/features/receipts/receipts.spec.ts.spec.componensrc/app/features/inventory/inventory.spec.tsts", "src/app/src/app/features/hazmat/hazmat.spec.tsent.ts", "src/src/app/features/empty-release/empty-release.spec.tsfesrc/app/featsrc/app/features/dashboard/dashboard.spec.tsc.component.ts", "src/app/src/app/features/master/master.spec.ts
+, "src/app/features/unloading-capacity/unloading-capacity.service.ts", "src/app/features/empty-car/empty-car.types.ts"}

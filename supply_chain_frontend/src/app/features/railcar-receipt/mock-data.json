@@ -1,0 +1,16 @@
+{
+  "carsInPlantTotal": 28,
+  "arrivalsToday": 6,
+  "releasedToFerrovalle": 3,
+  "plannedArrivals": 5,
+  "breakdownByMaterial": [
+    { "material": "Sodium sulfate", "carsInPlant": 12 },
+    { "material": "HLAS", "carsInPlant": 6 },
+    { "material": "Dense carbonate", "carsInPlant": 4 },
+    { "material": "Soda", "carsInPlant": 3 },
+    { "material": "Light carbonate", "carsInPlant": 2 },
+    { "material": "Pasta Surflex", "carsInPlant": 1 }
+  ],
+  "lastUpdatedIso": "2025-12-30T06:00:00.000Z",
+  "dataSource": "RECIBOS DE FFCC TRANSFER"
+}

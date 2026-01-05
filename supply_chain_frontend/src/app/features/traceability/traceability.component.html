@@ -1,0 +1,169 @@
+
+<section class="ta-container">
+  <header class="ta-header">
+    <h1>Traceability &amp; Audit</h1>
+    <div class="actions">
+      <button class="btn" (click)="exportCSV()">Export CSV</button>
+      <button class="btn" (click)="exportJSON()">Export JSON</button>
+    </div>
+  </header>
+
+  <!-- Filter panel -->
+  <h2 class="filter-heading">Filter Audit Logs</h2>
+  <form [formGroup]="filterForm" class="filters" aria-label="Audit filters">
+    <div class="row">
+      <label>
+        Use Case
+        <select formControlName="useCase">
+          <option value="">(All)</option>
+          <option *ngFor="let uc of useCaseOptions" [value]="uc">{{ uc }}</option>
+        </select>
+      </label>
+      <label>
+        Node
+        <select formControlName="node">
+          <option value="">(All)</option>
+          <option *ngFor="let n of nodeOptions" [value]="n">{{ n }}</option>
+        </select>
+      </label>
+      <label>
+        Material
+        <select formControlName="material">
+          <option value="">(All)</option>
+          <option *ngFor="let m of materialOptions" [value]="m">{{ m }}</option>
+        </select>
+      </label>
+      <label>
+        Action
+        <select formControlName="action">
+          <option value="">(All)</option>
+          <option *ngFor="let a of actionOptions" [value]="a">{{ a }}</option>
+        </select>
+      </label>
+      <label>
+        From
+        <input type="date" formControlName="from" />
+      </label>
+      <label>
+        To
+        <input type="date" formControlName="to" />
+      </label>
+    </div>
+    <div class="filter-actions">
+      <button type="button" class="btn secondary" (click)="clearFilters()">Clear Filters</button>
+    </div>
+  </form>
+
+  <!-- Manual entry (collapsible) -->
+  <details class="manual-entry">
+    <summary><strong>Add Manual Log Entry</strong></summary>
+    <form class="manual-form" (submit)="onManualLog(
+        ma.value, getSelectedValues(muc), mn.value, mm.value, mr.value, mq.value, mu.value, ms.value, mnk.value
+      ); $event.preventDefault();">
+      <div class="manual-row">
+        <label>
+          <span>Action</span>
+          <select #ma>
+            <option *ngFor="let a of actionOptions" [value]="a">{{ a }}</option>
+          </select>
+        </label>
+        <label>
+          <span>Use Case(s)</span>
+          <select #muc multiple>
+            <option *ngFor="let uc of useCaseOptions" [value]="uc">{{ uc }}</option>
+          </select>
+        </label>
+        <label>
+          <span>Node</span>
+          <select #mn>
+            <option *ngFor="let n of nodeOptions" [value]="n">{{ n }}</option>
+          </select>
+        </label>
+        <label>
+          <span>Material</span>
+          <select #mm>
+            <option value="">(none)</option>
+            <option *ngFor="let m of materialOptions" [value]="m">{{ m }}</option>
+          </select>
+        </label>
+      </div>
+      <div class="manual-row">
+        <label>
+          <span>Railcar ID</span>
+          <input #mr type="text" />
+        </label>
+        <label>
+          <span>Qty</span>
+          <input #mq type="number" min="1" />
+        </label>
+        <label>
+          <span>User ID</span>
+          <input #mu type="text" />
+        </label>
+        <label>
+          <span>Source</span>
+          <input #ms type="text" placeholder="HTM / Email / FV Portal / Manual" />
+        </label>
+        <label>
+          <span>Notes</span>
+          <input #mnk type="text" />
+        </label>
+      </div>
+      <div class="manual-actions">
+        <button class="btn" type="submit">Add</button>
+      </div>
+    </form>
+  </details>
+  
+
+  <!-- Logs table -->
+  <div class="table-wrap" role="region" aria-label="Trace logs">
+    <table class="audit-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Action</th>
+          <th>UC</th>
+          <th>Node</th>
+          <th>Material</th>
+          <th>Railcar</th>
+          <th>Qty</th>
+          <th>User</th>
+          <th>Timestamp</th>
+          <th>Source</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of filtered(); trackBy: trackById">
+          <td>{{ row.id }}</td>
+          <td>{{ row.action }}</td>
+          <td>{{ row.useCase.join(', ') }}</td>
+          <td>{{ row.node }}</td>
+          <td>{{ row.material || '—' }}</td>
+          <td>{{ row.railcarId || '—' }}</td>
+          <td>{{ row.quantity ?? '—' }}</td>
+          <td>{{ row.userId }}</td>
+          <td>{{ row.timestamp | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+          <td>{{ row.source || '—' }}</td>
+          <td>{{ row.notes || '—' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Collapsible Traceability Matrix -->
+  <details class="matrix">
+    <summary><strong>Traceability Matrix (compact)</strong></summary>
+    <ul>
+      <li><strong>Material Tracking</strong> — UC1, UC2 — Integration, Dashboard — Inventory/Node Alerts</li>
+      <li><strong>Unloading Plan Compliance</strong> — UC3 — Logic, UI, Teams — Compliance Alerts</li>
+      <li><strong>Transit Space</strong> — UC4 — Integration, Logic, UI — Transit Space Alerts</li>
+      <li><strong>Empty Car Release</strong> — UC5 — FV Portal, Logic, UI — Release Ratio Alerts</li>
+      <li><strong>Plant Inventory</strong> — UC6 — Integration, Dashboard — Threshold Alerts</li>
+      <li><strong>Hazardous Materials</strong> — UC7 — Integration, Logic, UI — Hazardous Alerts</li>
+      <li><strong>Daily Receipt</strong> — UC8 — Integration, Logic, UI — Daily Limit Alerts</li>
+      <li><strong>Unloading Capacity</strong> — UC9 — Logic, Dashboard — Deviation Alerts</li>
+    </ul>
+  </details>
+</section>

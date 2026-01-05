@@ -1,0 +1,7 @@
+
+.card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:1rem 1.25rem; }
+.row { display:grid; grid-template-columns: 160px 1fr; padding:.4rem 0; border-bottom:1px dashed #e5e7eb; }
+.row:last-child { border-bottom:none; }
+.label { color:#6b7280; }
+.value { color:#111827; font-weight:600; }
+.note { margin-top:.75rem; color:#6b7280; }

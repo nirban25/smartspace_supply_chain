@@ -1,0 +1,200 @@
+<!-- src/app/features/unloading-capacity/unloading-capacity.component.html -->
+<section class="uc-shell uc-plan-theme">
+  <header class="uc-header">
+    <div class="uc-title-row">
+      <h1 class="uc-title">Unloading Capacity</h1>
+      <div class="uc-actions">
+        <button type="button" class="btn" (click)="exportJSON()">Export JSON</button>
+        <button type="button" class="btn" (click)="exportTXT()">Export TXT</button>
+      </div>
+    </div>
+ 
+    <div class="uc-meta">
+      Daily update time: {{ config().dailyUpdateTime }} (local).
+      Last data refresh: {{ lastUpdated() ? (lastUpdated() | date:'short') : '—' }}
+    </div>
+    <div class="uc-meta">
+      Alerts trigger when deviation from design exceeds {{ config().deviationThreshold }} railcars.
+    </div>
+ 
+    <div class="summary-banner" [ngClass]="(alertCount() + opsExceededCapacity() + opsExceededSilo()) > 0 ? 'warn' : 'ok'">
+      <div class="summary-item"><div class="label">Total Planned</div><div class="value">{{ planTotal() }}</div></div>
+      <div class="summary-item"><div class="label">Deviation alerts</div><div class="value">{{ alertCount() }}</div></div>
+      <div class="summary-item"><div class="label">Ops > Daily cap</div><div class="value">{{ opsExceededCapacity() }}</div></div>
+      <div class="summary-item"><div class="label">Ops > Silo cap</div><div class="value">{{ opsExceededSilo() }}</div></div>
+      <div class="summary-status">
+        <button *ngIf="(alertCount() + opsExceededCapacity() + opsExceededSilo()) > 0"
+                type="button" class="btn btn-warn" (click)="openReview()">
+          ⚠ Review deviations/capacity
+        </button>
+        <span *ngIf="(alertCount() + opsExceededCapacity() + opsExceededSilo()) === 0">✓ All checks OK</span>
+      </div>
+    </div>
+  </header>
+ 
+  <!-- 1) Design vs Actual Inventory (by material) -->
+  <div class="panel">
+    <div class="panel-title">Design vs Actual Inventory (by material)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Material</th>
+          <th>Design total (#RCs)</th>
+          <th>Actual total (#RCs)</th>
+          <th>Deviation</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of materialRows()">
+          <td>{{ materialLabel(row.material) }}</td>
+          <td>{{ row.designTotal }}</td>
+          <td>{{ row.actualTotal }}</td>
+          <td>{{ row.deviation }}</td>
+          <td>
+            <span class="badge" [ngClass]="row.alert ? 'badge-warn' : 'badge-ok'">
+              {{ row.alert ? ('⚠ Deviation > ' + config().deviationThreshold) : 'OK' }}
+            </span>
+          </td>
+        </tr>
+        <tr *ngIf="materialRows().length === 0">
+          <td colspan="5" class="empty-row">No material targets loaded yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ 
+  <!-- 2) Daily Unloading Plan (per operation) -->
+  <div class="panel">
+    <div class="panel-title">Daily Unloading Plan (per operation)</div>
+ 
+    <div class="op-card" *ngFor="let op of operations()">
+      <div class="op-header">
+        <strong>{{ op.name }}</strong>
+        <div class="caps">
+          <span class="cap">Daily capacity: <strong>{{ op.dailyCapacity }}</strong></span>
+          <span class="cap">Silo capacity: <strong>{{ op.siloCapacity }}</strong></span>
+        </div>
+      </div>
+ 
+      <table>
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Planned unload (#RCs)</th>
+          </tr>
+        </thead>
+        <tbody [formGroup]="planForm">
+          <tr *ngFor="let t of designTargets()">
+            <td>{{ materialLabel(t.material) }}</td>
+            <td>
+              <input type="number" min="0" class="input"
+                     [formControlName]="'planned__' + op.operationId + '__' + t.material" />
+            </td>
+          </tr>
+          <tr *ngIf="designTargets().length === 0">
+            <td colspan="2" class="empty-row">No design targets to plan against yet.</td>
+          </tr>
+        </tbody>
+      </table>
+ 
+      <div *ngFor="let summary of opSummary()" [hidden]="summary.op.operationId !== op.operationId">
+        <span class="badge" [ngClass]="summary.capacityOk ? 'badge-ok' : 'badge-warn'">
+          Total planned ≤ Daily capacity:
+          {{ summary.capacityOk ? 'OK' : 'Exceeded' }} ({{ summary.totalPlanned }} / {{ summary.op.dailyCapacity }})
+        </span>
+        <span class="badge" [ngClass]="summary.siloOk ? 'badge-ok' : 'badge-warn'">
+          Total planned ≤ Silo capacity:
+          {{ summary.siloOk ? 'OK' : 'Exceeded' }} ({{ summary.totalPlanned }} / {{ summary.op.siloCapacity }})
+        </span>
+      </div>
+    </div>
+ 
+    <div *ngIf="operations().length === 0" class="empty-row">No operations loaded yet.</div>
+  </div>
+ 
+  <!-- 3) Hazardous Materials Rule -->
+  <div class="panel">
+    <div class="panel-title">Hazardous Materials Rule (arrival = unloading capacity + safety)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Material</th>
+          <th>Unloading capacity (#RCs)</th>
+          <th>Safety (#RCs)</th>
+          <th>Design total (#RCs)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of hazardMaterials">
+          <td>{{ materialLabel(m) }}</td>
+          <td>{{ hazardView()[m]?.capacity ?? '—' }}</td>
+          <td>{{ hazardView()[m]?.safety ?? '—' }}</td>
+          <td>{{ hazardView()[m]?.designTotal ?? '—' }}</td>
+        </tr>
+        <tr *ngIf="hazardMaterials.length === 0">
+          <td colspan="4" class="empty-row">No hazardous materials configured.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ 
+  <!-- Deviations Review Modal -->
+  <div class="modal-backdrop" *ngIf="reviewOpen()">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deviationReviewTitle">
+      <div class="modal-header">
+        <h2 id="deviationReviewTitle">Deviation Review</h2>
+        <button type="button" class="btn close" (click)="closeReview()" aria-label="Close review">✕</button>
+      </div>
+ 
+      <div class="modal-body">
+        <p class="muted">Threshold: ±{{ config().deviationThreshold }} railcars.</p>
+ 
+        <h3>Materials with deviation &gt; threshold</h3>
+        <table>
+          <thead><tr><th>Material</th><th>Design total</th><th>Actual total</th><th>Deviation</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let m of deviatedMaterials()">
+              <td>{{ m.materialLabel }}</td><td>{{ m.designTotal }}</td><td>{{ m.actualTotal }}</td><td>{{ m.deviation }}</td>
+            </tr>
+            <tr *ngIf="deviatedMaterials().length === 0">
+              <td colspan="4" class="empty-row">No material deviations.</td>
+            </tr>
+          </tbody>
+        </table>
+ 
+        <h3>Operations over daily capacity</h3>
+        <table>
+          <thead><tr><th>Operation</th><th>Total planned</th><th>Daily capacity</th><th>Exceed by</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let s of opsOverDaily()">
+              <td>{{ s.operation }}</td><td>{{ s.totalPlanned }}</td><td>{{ s.dailyCapacity }}</td><td>{{ s.exceedBy }}</td>
+            </tr>
+            <tr *ngIf="opsOverDaily().length === 0">
+              <td colspan="4" class="empty-row">No daily capacity breaches.</td>
+            </tr>
+          </tbody>
+        </table>
+ 
+        <h3>Operations over silo capacity</h3>
+        <table>
+          <thead><tr><th>Operation</th><th>Total planned</th><th>Silo capacity</th><th>Exceed by</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let s of opsOverSilo()">
+              <td>{{ s.operation }}</td><td>{{ s.totalPlanned }}</td><td>{{ s.siloCapacity }}</td><td>{{ s.exceedBy }}</td>
+            </tr>
+            <tr *ngIf="opsOverSilo().length === 0">
+              <td colspan="4" class="empty-row">No silo capacity breaches.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+ 
+      <div class="modal-footer">
+        <button type="button" class="btn" (click)="exportReviewJSON()">Export Deviations JSON</button>
+        <button type="button" class="btn" (click)="exportReviewTXT()">Export Deviations TXT</button>
+        <button type="button" class="btn btn-warn" (click)="closeReview()">Close</button>
+      </div>
+    </div>
+  </div>
+</section>

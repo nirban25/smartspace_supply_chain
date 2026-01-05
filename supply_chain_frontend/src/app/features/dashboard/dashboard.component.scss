@@ -1,0 +1,332 @@
+/* Horizontal cards container */
+.cards-row {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+  /* keeps all cards on a single line; remove if you want wrapping on small screens */
+  flex-wrap: nowrap;
+  margin-bottom: 18px;
+}
+ 
+.card.stat {
+  flex: 1 0 0;                /* equal widths */
+  background: #ffffff;
+  border: 1px solid #f2e9b8;  /* yellowish border */
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(10,10,10,.06), 0 2px 8px rgba(10,10,10,.08);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+ 
+/* Value and label */
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #000;                /* black */
+  line-height: 1.1;
+}
+.stat-label {
+  font-weight: 600;
+  color: #3f3f3f;             /* dark gray for label */
+}
+ 
+/* Optional: compact responsive behavior (wrap on small screens) */
+@media (max-width: 720px) {
+  .cards-row {
+    flex-wrap: wrap;           /* allow wrapping on small screens */
+  }
+  .card.stat {
+    flex: 1 1 calc(50% - 16px);/* two per row on small screens */
+  }
+}
+ 
+.chart-header,
+.section-title,
+.table-header {
+  font-weight: 800; /* extra bold */
+  font-size: 1.2rem;
+  color: #000;
+}
+ 
+/* --- Section container --- */
+.section {
+  padding: 18px;
+  margin-top: 18px;
+}
+ 
+/* --- Bold section headings --- */
+.section-title {
+  font-weight: 800;          /* bold */
+  font-size: 1.2rem;
+  color: #000;
+  margin-bottom: 12px;
+}
+ 
+/* --- Metric blocks --- */
+.metric {
+  background: #fffef0;       /* brighter light yellow panel */
+  border: 1px solid var(--border, #f2e9b8);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+ 
+/* Row: label left, value right (same line) */
+.metric-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+ 
+/* Label + Value styling */
+.metric-label {
+  color: #000;
+  font-weight: 700;
+}
+.metric-value {
+  color: #000;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;  /* cleaner numeric alignment */
+}
+ 
+/* Description under the row */
+.metric-desc {
+  margin-top: 6px;
+  color: var(--muted, #3f3f3f);
+  font-weight: 600;
+}
+ 
+/* Optional: tighten spacing on small screens */
+@media (max-width: 600px) {
+  .metric { padding: 10px 12px; }
+  .metric-label { font-weight: 700; }
+  .metric-value { font-weight: 800; }
+}
+ 
+ 
+/* Bold headings already set: ensure high emphasis */
+.section-title {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #000;
+  margin-bottom: 12px;
+}
+ 
+/* Metric block container */
+.metric {
+  background: #fffef0;                    /* brighter yellow panel */
+  border: 1px solid var(--border, #f2e9b8);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+ 
+/* Row: label + value pill */
+.metric-row {
+  display: flex;
+  align-items: center;                    /* center icon & text vertically */
+  justify-content: space-between;
+  gap: 12px;
+}
+ 
+/* Label + icon */
+.metric-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #000;
+  font-weight: 700;
+}
+.metric-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+}
+ 
+/* Value pill (badge) */
+.metric-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;                   /* pill shape */
+  font-weight: 800;
+  font-size: .95rem;
+  border: 1px solid #000;
+}
+ 
+/* Contrast version – black text on pale yellow */
+.badge-contrast {
+  background: #fff5b3;
+  color: #000;
+}
+ 
+/* Description under row */
+.metric-desc {
+  margin-top: 6px;
+  color: var(--muted, #3f3f3f);
+  font-weight: 600;
+}
+ 
+/* Compact on small screens */
+@media (max-width: 600px) {
+  .metric { padding: 10px 12px; }
+  .metric-badge { padding: 5px 10px; font-size: .9rem; }
+}
+ 
+/* ===== Full card styling for the table ===== */
+.table-card {
+  padding: 0;                 /* card will handle its own header/body/footer spacing */
+  overflow: hidden;
+  border: 1px solid var(--border, #f2e9b8);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(10,10,10,.06), 0 2px 8px rgba(10,10,10,.08);
+  background: var(--panel, #fff);
+  margin-top: 18px;
+}
+ 
+/* Header */
+.table-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border, #f2e9b8);
+  background: #fffef0;               /* subtle yellow header */
+}
+.table-card__title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;                   /* bold per your request */
+  color: #000;
+}
+.table-card__actions .btn { margin-left: 8px; }
+ 
+/* Body (table wrapper with responsive scroll) */
+.table-card__body {
+  padding: 0;                         /* table handles its own padding */
+  overflow-x: auto;                   /* responsive horizontal scroll if needed */
+}
+ 
+/* Table base */
+.msd-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-weight: 600;
+}
+ 
+/* Head cells */
+.msd-table thead th {
+  text-align: left;
+  color: var(--muted, #3f3f3f);
+  font-size: .85rem;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border, #f2e9b8);
+  white-space: nowrap;
+}
+ 
+/* Body cells */
+.msd-table tbody td {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border, #f2e9b8);
+  color: #0a0a0a;
+}
+ 
+/* Zebra rows (alternate background) */
+.msd-table tbody tr.alt {
+  background: #fffbdd;                /* very light yellow alt row */
+}
+.msd-table tbody tr:hover {
+  background: var(--primary-50, #fff5b3);   /* hover highlight */
+}
+ 
+/* Column sizing (tune to your liking) */
+.col-id       { width: 80px;  }
+.col-desc     { width: 40%;   }
+.col-badge    { width: 180px; }
+.col-text     { width: 160px; }
+.col-actions  { width: 120px; text-align: right; }
+ 
+/* Badge styles (reuse your existing classes; included for completeness) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: .85rem;
+}
+.badge.pending   { background:#fff1a8; color:#1f1f1f; }
+.badge.transit   { background:#ffe58f; color:#000; }
+.badge.delivered { background:#eaffc7; color:#0a0a0a; }
+ 
+/* Buttons: primary + outline variants */
+.btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-primary {
+  border: 1px solid #000;
+  background: #000;
+  color: #fff;
+}
+.btn-primary:hover { background:#1c1c1c; }
+ 
+.btn-outline {
+  border: 1px solid #000;
+  background: transparent;
+  color: #000;
+}
+.btn-outline:hover { background:#fff5b3; }
+ 
+/* Footer (optional) */
+.table-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  background: #fffef0;
+  border-top: 1px solid var(--border, #f2e9b8);
+}
+.table-card__footer .footer-left,
+.table-card__footer .footer-right {
+  color: var(--muted, #3f3f3f);
+  font-weight: 600;
+}
+ 
+/* Make the top stat cards turn yellow on hover */
+.card.stat.hover-target {
+  transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+ 
+.card.stat.hover-target:hover {
+  background: #fff5b3;         /* pale yellow */
+  border-color: #e8d97a;       /* slightly darker yellow border */
+  box-shadow: 0 2px 4px rgba(10,10,10,.08), 0 4px 12px rgba(10,10,10,.10);
+}
+ 
+/* Optional: improve contrast of text on yellow background */
+.card.stat.hover-target:hover .stat-value { color: #000; }
+.card.stat.hover-target:hover .stat-label { color: #1f1f1f; }
+ 
+/* Accessibility: apply same visual state on keyboard focus */
+.card.stat.hover-target:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  background: #fff5b3;
+  border-color: #e8d97a;
+}
+ 
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .card.stat.hover-target {
+    transition: none;
+  }
+}

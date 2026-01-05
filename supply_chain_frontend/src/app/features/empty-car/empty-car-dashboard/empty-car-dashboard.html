@@ -1,0 +1,102 @@
+
+<section class="empty-release-card" aria-label="Empty Car Retirement & Release" role="region">
+  <header class="erc-header">
+    <h3>Empty Car Retirement & Release</h3>
+    <div class="erc-actions">
+      <!-- ✅ type="button" + (click) -->
+      <button class="btn secondary" type="button" (click)="onRefreshClick()">Refresh</button>
+      <button class="btn primary" type="button" (click)="onOpenPortalClick()">Open FV Portal</button>
+    </div>
+  </header>
+
+  <!-- KPIs -->
+  <div class="erc-kpis" *ngIf="metrics() as m">
+    <div class="kpi">
+      <div class="kpi-label">Unloaded Cars</div>
+      <div class="kpi-value">{{ m.unloadedCars }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Released to FFCC</div>
+      <div class="kpi-value">{{ m.releasedCars }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Release Ratio (Released / Unloaded)</div>
+      <div class="kpi-value" [class.good]="ratio() >= 1" [class.bad]="ratio() < 1">
+        {{ ratio() | number : '1.2-2' }}
+      </div>
+      <div class="kpi-sub">Target: 1.00 (1:1)</div>
+    </div>
+  </div>
+
+  <!-- Alert bar -->
+  <div *ngIf="hasAlert()" class="erc-alert" role="alert" aria-live="assertive">
+    ⚠️ Alert — Released &lt; Unloaded. Maintain a 1:1 ratio and formalize releases via FV portal.
+  </div>
+
+  <!-- Meta & sources -->
+  <div class="erc-meta" *ngIf="metrics() as m">
+    <div>
+      <strong>Last Updated:</strong> {{ m.lastUpdatedISO | date : 'MMM d, y, h:mm a' }}
+      <span class="hint"> (Daily target refresh: 06:00)</span>
+    </div>
+    <div *ngIf="m.owner">
+      <strong>Decision Owner:</strong> {{ m.owner }}
+    </div>
+
+    <details class="erc-sources">
+      <summary>Data Sources & References</summary>
+      <ul>
+        <li *ngIf="m.sources.unloadPlanExcel">Unload Plan Excel: <code>{{ m.sources.unloadPlanExcel }}</code></li>
+        <li *ngIf="m.sources.releaseEmail">Release Email: <code>{{ m.sources.releaseEmail }}</code></li>
+        <li *ngIf="m.sources.fvPortal">
+          FV Divers Services Portal:
+          <a [href]="m.sources.fvPortal" target="_blank" rel="noreferrer">{{ m.sources.fvPortal }}</a>
+        </li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- Alerts list -->
+  <aside class="alerts-panel" aria-label="Empty Car Release Alerts" *ngIf="alerts().length">
+    <h4>Alerts</h4>
+    <ul class="alerts-list">
+      <li *ngFor="let a of alerts()" class="alert"
+          [class.info]="a.severity === 'info'"
+          [class.warning]="a.severity === 'warning'"
+          [class.critical]="a.severity === 'critical'">
+        <span class="time">{{ a.timestampISO | date : 'MMM d, h:mm a' }}</span>
+        <span class="msg">{{ a.message }}</span>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Prepare Release -->
+  <form class="release-form" [formGroup]="releaseForm" (ngSubmit)="onSubmitRelease()" aria-label="Prepare release draft">
+    <h4>Prepare Release</h4>
+    <label>
+      Empty Car IDs (comma/space-separated)
+      <input type="text" formControlName="carIdsText" placeholder="e.g., RC12345 RC67890 RC54321" required />
+    </label>
+
+    <label>
+      Notes (optional)
+      <textarea formControlName="notes" placeholder="Unloading complete; directing to Ferrovalle yard."></textarea>
+    </label>
+
+    <!-- ✅ submit button in form -->
+    <button class="btn primary" type="submit" [disabled]="releaseForm.invalid">
+      Go to FV Portal &amp; Release
+    </button>
+  </form>
+</section>
+
+<!-- Activity Log -->
+<section class="activity-log" aria-label="Traceability & Audit" *ngIf="events().length">
+  <h4>Activity Log</h4>
+  <ul>
+    <li *ngFor="let ev of events()">
+      <span class="time">{{ ev.timestampISO | date : 'MMM d, y, h:mm a' }}</span>
+      <strong>{{ ev.user }}</strong> — {{ ev.action }}
+    </li>
+  </ul>
+</section>

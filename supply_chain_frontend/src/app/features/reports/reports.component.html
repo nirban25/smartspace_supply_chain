@@ -1,0 +1,126 @@
+
+<section class="reports-page">
+  <header class="page-header">
+    <h1>Reports</h1>
+
+    <div class="summary-card" [class.alert]="isLowCompliance">
+      <div class="metric">
+        <span>Total Planned</span>
+        <strong>{{ totalPlanned }}</strong>
+      </div>
+      <div class="metric">
+        <span>Total Unloaded</span>
+        <strong>{{ totalUnloaded }}</strong>
+      </div>
+      <div class="metric">
+        <span>Compliance</span>
+        <strong>{{ compliancePct }}%</strong>
+      </div>
+      <aside *ngIf="isLowCompliance" class="alert-msg">
+        ⚠️ Compliance below 90%.
+      </aside>
+    </div>
+
+    <div class="actions">
+      <button class="btn" (click)="exportJson()">Export JSON</button>
+      <button class="btn" (click)="downloadTxt()">Export TXT</button>
+
+      <!-- Select file + Import button -->
+      <input
+        #fileInput
+        type="file"
+        accept=".json"
+        (change)="onFileSelected(fileInput)"
+        style="display:inline-block; margin-right:8px;"
+      />
+
+      <button
+        class="btn"
+        (click)="importSelectedFile(fileInput)"
+        [disabled]="!hasFileSelected || importing"
+      >
+        {{ importing ? 'Importing…' : 'Import' }}
+      </button>
+    </div>
+
+    <!-- Optional: subtle feedback after import -->
+    <p *ngIf="lastImportMsg" style="margin:0; font-size:0.85rem; opacity:0.8;">
+      {{ lastImportMsg }}
+    </p>
+  </header>
+
+  <main class="grid-2">
+    <!-- By Material -->
+    <section class="card">
+      <h2>By Material</h2>
+      <table class="grid">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Planned</th>
+            <th>Unloaded</th>
+            <th>Compliance %</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of materials">
+            <td>{{ m }}</td>
+            <td>{{ aggByMaterial()[m].planned }}</td>
+            <td>{{ aggByMaterial()[m].unloaded }}</td>
+            <td>{{ aggByMaterial()[m].compliance }}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- By Node -->
+    <section class="card">
+      <h2>By Node</h2>
+      <table class="grid">
+        <thead>
+          <tr>
+            <th>Node</th>
+            <th>Planned</th>
+            <th>Unloaded</th>
+            <th>Compliance %</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let n of nodes">
+            <td>{{ n }}</td>
+            <td>{{ aggByNode()[n].planned }}</td>
+            <td>{{ aggByNode()[n].unloaded }}</td>
+            <td>{{ aggByNode()[n].compliance }}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Raw lines -->
+  <section class="card">
+    <h2>Raw Lines</h2>
+    <table class="grid">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Material</th>
+          <th>Node</th>
+          <th>Planned</th>
+          <th>Unloaded</th>
+          <th>Line Compliance %</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of data; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ l.material }}</td>
+          <td>{{ l.node }}</td>
+          <td>{{ l.plannedRc }}</td>
+          <td>{{ l.unloadedRc }}</td>
+          <td>{{ getLineCompliance(l) }}%</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</section>

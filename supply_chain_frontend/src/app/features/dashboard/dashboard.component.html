@@ -1,0 +1,251 @@
+  <!-- ====== TOP HORIZONTAL STAT CARDS (with optional hover cards) ====== -->
+  <section class="cards-row">
+    <!-- Empty Cars -->
+    <div class="card stat hover-target">
+      <div class="stat-value">120</div>
+      <div class="stat-label"></div>
+ 
+      <!-- Hover card (optional) -->
+      <div class="hover-card" role="tooltip" aria-label="Empty Cars details">
+        <div class="hc-title">Empty Cars</div>
+        <div class="hc-value"></div>
+        <div class="hc-desc"></div>
+      </div>
+    </div>
+ 
+    <!-- Hazardous Materials -->
+    <div class="card stat hover-target">
+      <div class="stat-value">15</div>
+      <div class="stat-label"></div>
+ 
+      <!-- Hover card (optional) -->
+      <div class="hover-card" role="tooltip" aria-label="Hazardous Materials details">
+        <div class="hc-title">Hazardous Materials</div>
+        <div class="hc-value"></div>
+        <div class="hc-desc"></div>
+      </div>
+    </div>
+ 
+    <!-- Material Supply -->
+    <div class="card stat hover-target">
+      <div class="stat-value">1,280</div>
+      <div class="stat-label"></div>
+ 
+      <!-- Hover card (optional) -->
+      <div class="hover-card" role="tooltip" aria-label="Material Supply details">
+        <div class="hc-title">Material Supply</div>
+        <div class="hc-value"></div>
+        <div class="hc-desc"></div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ====== MATERIAL TRACKING: GRAPH (heading bold) ====== -->
+  <section id="material-tracking" class="card chart hover-target">
+    <div class="chart-header"><strong>Material Supply Over Time</strong></div>
+ 
+    <!-- Hover card for chart title (optional) -->
+    <div class="hover-card chart-hover" role="tooltip" aria-label="Material Supply Over Time details">
+      <div class="hc-title"></div>
+      <div class="hc-desc"></div>
+    </div>
+ 
+    <div class="chart-body">
+      <svg viewBox="0 0 700 230" preserveAspectRatio="none" class="svg-chart">
+        <!-- area fill (soft yellow) -->
+        <path d="M0 170
+                C 80 175, 130 150, 170 160
+                C 220 175, 270 135, 320 150
+                C 370 165, 430 110, 470 140
+                C 520 170, 570 160, 610 165
+                C 650 175, 690 150, 700 145
+                L 700 230 L 0 230 Z"
+              fill="rgba(255, 241, 168, .55)"/>
+        <!-- line (black) -->
+        <path d="M0 170
+                C 80 175, 130 150, 170 160
+                C 220 175, 270 135, 320 150
+                C 370 165, 430 110, 470 140
+                C 520 170, 570 160, 610 165
+                C 650 175, 690 150, 700 145"
+              stroke="#000" stroke-width="3" fill="none"/>
+        <!-- x labels -->
+        <g fill="#3f3f3f" font-size="12" font-weight="600">
+          <text x="20"  y="220">Jan</text>
+          <text x="100" y="220">Feb</text>
+          <text x="180" y="220">Mar</text>
+          <text x="260" y="220">Apr</text>
+          <text x="340" y="220">May</text>
+          <text x="420" y="220">Jun</text>
+          <text x="500" y="220">Jul</text>
+          <text x="580" y="220">Aug</text>
+          <text x="660" y="220">Jul</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+ 
+  <!-- ====== UNLOADING PLAN COMPLIANCE (bold heading, icon + pill badges) ====== -->
+  <section id="unloading-plan-compliance" class="card section">
+    <div class="section-title"><strong>Unloading Plan Compliance</strong></div>
+ 
+    <!-- Plan Compliance -->
+    <div class="metric">
+      <div class="metric-row">
+        <span class="metric-label">
+          <span class="metric-icon" aria-hidden="true">
+            <!-- check-circle icon -->
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="#000" stroke-width="2"></circle>
+              <path d="M8 12l2.5 2.5L16 9" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          Plan Compliance
+        </span>
+        <span class="metric-badge badge-contrast">92%</span>
+      </div>
+      <div class="metric-desc">Loads unloaded vs plan</div>
+    </div>
+ 
+    <!-- On-Time Unloading -->
+    <div class="metric">
+      <div class="metric-row">
+        <span class="metric-label">
+          <span class="metric-icon" aria-hidden="true">
+            <!-- clock icon -->
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="#000" stroke-width="2"></circle>
+              <path d="M12 7v6l4 2" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          On-Time Unloading
+        </span>
+        <span class="metric-badge badge-contrast">88%</span>
+      </div>
+      <div class="metric-desc">Within target time window</div>
+    </div>
+ 
+    <!-- Avg. Unload Time -->
+    <div class="metric">
+      <div class="metric-row">
+        <span class="metric-label">
+          <span class="metric-icon" aria-hidden="true">
+            <!-- hourglass icon -->
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+              <path d="M7 4h10v2a5 5 0 0 1-5 5 5 5 0 0 1-5-5V4zM7 20h10v-2a5 5 0 0 0-5-5 5 5 0 0 0-5 5v2z" stroke="#000" stroke-width="2" fill="#fffef0"></path>
+            </svg>
+          </span>
+          Avg. Unload Time
+        </span>
+        <span class="metric-badge badge-contrast">42m</span>
+      </div>
+      <div class="metric-desc">Per consignment</div>
+    </div>
+  </section>
+ 
+  <!-- ====== EMPTY CAR RELEASE (bold heading, icon + pill badges) ====== -->
+  <section id="empty-car-release" class="card section">
+    <div class="section-title"><strong>Empty Car Release</strong></div>
+ 
+    <!-- Cars Released -->
+    <div class="metric">
+      <div class="metric-row">
+        <span class="metric-label">
+          <span class="metric-icon" aria-hidden="true">
+            <!-- train/car icon -->
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+              <path d="M4 16h16l-1.5-6.5a2 2 0 0 0-1.95-1.5H7.45A2 2 0 0 0 5.5 9.5L4 16z" stroke="#000" stroke-width="2" fill="#fffef0"/>
+              <circle cx="7" cy="18" r="1.7" fill="#000"></circle>
+              <circle cx="17" cy="18" r="1.7" fill="#000"></circle>
+            </svg>
+          </span>
+          Cars Released
+        </span>
+        <span class="metric-badge badge-contrast">96</span>
+      </div>
+      <div class="metric-desc">Last 7 days</div>
+    </div>
+ 
+    <!-- Avg. Dwell -->
+    <div class="metric">
+      <div class="metric-row">
+        <span class="metric-label">
+          <span class="metric-icon" aria-hidden="true">
+            <!-- yard/dwell icon (map pin) -->
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+              <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" stroke="#000" stroke-width="2" fill="#fffef0"></path>
+              <circle cx="12" cy="10" r="2.8" stroke="#000" stroke-width="2"></circle>
+            </svg>
+          </span>
+          Avg. Dwell
+        </span>
+        <span class="metric-badge badge-contrast">13h</span>
+      </div>
+      <div class="metric-desc">Yard dwell time</div>
+    </div>
+ 
+    <!-- Release Rate -->
+    <div class="metric">
+      <div class="metric-row">
+        <span class="metric-label">
+          <span class="metric-icon" aria-hidden="true">
+            <!-- trend/arrow icon -->
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+              <path d="M4 14l5-5 4 4 5-6" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          Release Rate
+        </span>
+        <span class="metric-badge badge-contrast">78%</span>
+      </div>
+      <div class="metric-desc">Released within SLA</div>
+    </div>
+  </section>
+ 
+ 
+  <!-- ====== PLANT INVENTORY: TABLE (full card formatting) ====== -->
+  <section id="plant-inventory" class="card table-card">
+    <!-- Card header -->
+    <header class="table-card__header">
+      <h3 class="table-card__title">Material Supply Data</h3>
+      <!-- optional actions (filters/export) -->
+      <!-- <div class="table-card__actions">
+        <button class="btn btn-outline">Export</button>
+      </div> -->
+    </header>
+ 
+    <!-- Table container (scrolls horizontally on small screens) -->
+    <div class="table-card__body">
+      <table class="msd-table">
+        <thead>
+          <tr>
+            <th class="col-id">ID</th>
+            <th class="col-desc">DESCRIPTION</th>
+            <th class="col-badge">STATUS</th>
+            <th class="col-text">STATUS</th>
+            <th class="col-actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of rows; let i = index" [class.alt]="i % 2 === 1">
+            <td class="col-id">{{ r.id }}</td>
+            <td class="col-desc">{{ r.description }}</td>
+            <td class="col-badge">
+              <span [class]="badgeClass(r.status)">{{ r.status }}</span>
+            </td>
+            <td class="col-text">{{ r.status }}</td>
+            <td class="col-actions">
+              <button class="btn btn-primary">VIEW</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+ 
+    <!-- Card footer (optional totals/pagination) -->
+    <!-- <footer class="table-card__footer">
+      <div class="footer-left">4 items</div>
+      <div class="footer-right">Page 1 of 1</div>
+    </footer> -->
+  </section>
+ 

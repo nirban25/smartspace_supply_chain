@@ -1,0 +1,131 @@
+.receipt-page {
+  padding: 1.25rem;
+  color: #1b1b1b;
+}
+.page-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.page-header .meta { font-size: 0.875rem; color: #666; }
+.page-header .source { margin-left: 1rem; }
+ 
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.card {
+  border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; background: #fff;
+}
+.card .label { font-size: 0.9rem; color: #555; }
+.card .value { font-size: 1.6rem; font-weight: 600; margin-top: 0.25rem; }
+.card.warning { border-color: #e53935; background: #ffebee; }
+.card.forecast { border-color: #fb8c00; background: #fff3e0; }
+ 
+.materials { margin-top: 2rem; }
+.material-table { width: 100%; border-collapse: collapse; }
+.material-table th, .material-table td { border-bottom: 1px solid #eee; padding: 0.5rem; text-align: left; }
+.material-table th { background: #fafafa; }
+ 
+.notes { margin-top: 1.25rem; font-size: 0.9rem; color: #444; }
+ 
+ 
+/* ===== MATERIAL TABLE SECTION (IMPROVED) ===== */
+.rc-material-section {
+  margin-top: 0.5rem;
+}
+ 
+/* Optional compact header with count */
+.rc-section-header {
+  display: flex;
+  align-items: right;
+  justify-content: space-between;
+  gap: 3rem;
+  margin-bottom: 0.5rem;
+}
+.rc-section-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.rc-table-meta {
+  font-size: 0.85rem;
+  color: #666;
+}
+ 
+/* Wrapper (for future sticky header/scroll if needed) */
+.rc-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #eadc9c; /* subtle border tying to yellow palette */
+  border-radius: 10px;
+  background: transparent; /* keep using the card's light yellow background */
+}
+ 
+/* Base table styles */
+.rc-material-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 360px;
+  background: transparent;
+  font-size: 0.95rem;
+}
+ 
+.rc-material-table thead th.rc-col-num {
+  text-align: center;
+  border-left: 2px solid #e6d47b;        /* vertical border between columns */
+  padding-right: 0.85rem;                 /* comfortable right padding */
+  padding-left: 0.85rem;                  /* room away from the divider */
+}
+ 
+/* Body cells (last column) — right align + vertical divider on the left */
+.rc-material-table tbody td.rc-num {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  border-left: 2px solid #eee3aa;         /* subtle yellow-tinted divider */
+  padding-right: 0.85rem;
+  padding-left: 0.85rem;
+}
+ 
+ 
+/* Header row */
+.rc-material-table thead th {
+  position: sticky; /* if parent gets a fixed height later */
+  top: 0;
+  background: #fff3c4;  /* slightly stronger yellow for header */
+  color: #2f2f2f;
+  font-weight: 700;
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 2px solid #e6d47b;
+}
+ 
+/* Body rows */
+.rc-material-table tbody td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #eee3aa; /* subtle divider in yellow hue */
+  color: #1b1b1b;
+}
+ 
+/* Zebra striping — alternate rows light yellow */
+.rc-material-table tbody tr.rc-alt-row {
+  background: #fff9db;  /* light yellow (matches card but slightly distinct) */
+}
+ 
+/* Hover state (kept subtle to avoid overpowering yellow) */
+.rc-material-table tbody tr:hover {
+  background: #fff4b8;  /* a tad deeper yellow on hover */
+}
+ 
+/* Numeric column alignment */
+.rc-material-table .rc-col-num,
+.rc-material-table td.rc-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+ 
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .rc-material-table thead th,
+  .rc-material-table tbody td {
+    padding: 0.55rem 0.6rem;
+  }
+}

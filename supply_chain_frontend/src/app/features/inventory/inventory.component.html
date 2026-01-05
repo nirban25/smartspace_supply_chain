@@ -1,0 +1,59 @@
+
+<div class="page">
+  <div class="inventory-card">
+    <h1>Inventory Management</h1>
+    <p class="timestamp">Last Updated: {{ lastUpdated() }}</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Location</th>
+          <th>Capacity</th>
+          <th>Current</th>
+          <th>Utilization</th>
+          <th>Hazardous</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of inventory(); track item.location) {
+          <tr [class.over]="isOverLimit(item)">
+            <td>{{ item.location }}</td>
+            <td>{{ item.capacity }}</td>
+            <td>{{ item.current }}</td>
+            <td>{{ utilization(item) }}</td>
+            <td>
+              @if (item.hazardous) {
+                <span class="hazard">Yes</span>
+              } @else {
+                No
+              }
+            </td>
+            <td>
+              @if (isOverLimit(item)) {
+                <span class="alert">Over Limit!</span>
+              } @else {
+                <span class="ok">OK</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="alerts" *ngIf="alerts().length > 0">
+      <h3>Alerts:</h3>
+      <ul>
+        @for (alert of alerts(); track alert) {
+          <li>{{ alert }}</li>
+        }
+      </ul>
+    </div>
+
+    <div class="actions">
+      <a class="btn-primary" routerLink="/dashboard">Back to Dashboard</a>
+      <!-- Hook up the click -->
+      <button class="btn-primary" (click)="onDownloadCsv()">Download Report</button>
+    </div>
+  </div>
+</div>

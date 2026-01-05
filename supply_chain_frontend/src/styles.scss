@@ -1,0 +1,23 @@
+
+:root {
+  --primary-bg: #FFF9E5;    /* Light yellow */
+  --primary-text: #111111;  /* Black */
+  --accent-bg: #FFF6CC;     /* Slightly deeper light yellow for hover/alt */
+  --accent-text: #222;
+  --nav-active: #FFE066;    /* Deeper yellow for active nav */
+  --nav-grey: #FFFDE7;      /* For alternate nav items */
+}
+body {
+  background: var(--primary-bg);
+  color: var(--primary-text);
+}
+
+button, input, select, textarea {
+  background: var(--primary-bg);
+  color: var(--primary-text);
+  border: 1px solid var(--primary-text);
+}
+button:hover {
+  background: var(--nav-active);
+}
+

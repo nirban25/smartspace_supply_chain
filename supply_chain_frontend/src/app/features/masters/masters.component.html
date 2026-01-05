@@ -1,0 +1,241 @@
+
+<section class="masters">
+  <header class="masters__header">
+    <h1>Masters</h1>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat__label">Materials</span>
+        <span class="stat__value">{{ materialCount() }}</span>
+      </div>
+      <div class="stat">
+        <span class="stat__label">Nodes</span>
+        <span class="stat__value">{{ nodeCount() }}</span>
+      </div>
+      <div class="stat">
+        <span class="stat__label">Suppliers</span>
+        <span class="stat__value">{{ supplierCount() }}</span>
+      </div>
+      <div class="stat">
+        <span class="stat__label">Parameters</span>
+        <span class="stat__value">{{ paramCount() }}</span>
+      </div>
+    </div>
+
+    <nav class="masters__tabs" role="tablist" aria-label="Masters tabs">
+      <button [class.active]="tab() === 'materials'" (click)="setTab('materials')" role="tab">Materials</button>
+      <button [class.active]="tab() === 'nodes'" (click)="setTab('nodes')" role="tab">Nodes/Yards</button>
+      <button [class.active]="tab() === 'suppliers'" (click)="setTab('suppliers')" role="tab">Suppliers</button>
+      <button [class.active]="tab() === 'parameters'" (click)="setTab('parameters')" role="tab">Parameters</button>
+    </nav>
+  </header>
+
+  <!-- MATERIALS TAB -->
+  <div *ngIf="tab() === 'materials'" class="panel">
+    <h2>Materials</h2>
+
+    <form class="form-grid" (ngSubmit)="addMaterial()">
+      <label>
+        Name
+        <input type="text" [(ngModel)]="newMaterial.name" name="matName" required />
+      </label>
+      <label>
+        Supplier
+        <input type="text" [(ngModel)]="newMaterial.supplier" name="matSupplier" />
+      </label>
+      <label>
+        Hazardous
+        <input type="checkbox" [(ngModel)]="newMaterial.hazardous" name="matHazardous" />
+      </label>
+      <label>
+        Design Stock
+        <input type="number" [(ngModel)]="newMaterial.design" name="matDesign" min="0" />
+      </label>
+      <label>
+        Safety Stock
+        <input type="number" [(ngModel)]="newMaterial.safety" name="matSafety" min="0" />
+      </label>
+      <button type="submit" class="btn primary">Add Material</button>
+    </form>
+
+    <table class="table" aria-label="Materials table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Supplier</th>
+          <th>Hazardous</th>
+          <th>Design</th>
+          <th>Safety</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of materials(); trackBy: trackById">
+          <td>{{ m.name }}</td>
+          <td>{{ m.supplier || '—' }}</td>
+          <td>
+            <span class="pill" [class.pill--danger]="m.hazardous" [class.pill--safe]="!m.hazardous">
+              {{ m.hazardous ? 'Yes' : 'No' }}
+            </span>
+          </td>
+          <td>{{ m.design }}</td>
+          <td>{{ m.safety }}</td>
+          <td>
+            <button class="btn danger" (click)="removeMaterial(m.id)" aria-label="Delete">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- NODES TAB -->
+  <div *ngIf="tab() === 'nodes'" class="panel">
+    <h2>Nodes & Yards</h2>
+
+    <form class="form-grid" (ngSubmit)="addNode()">
+      <label>
+        Name
+        <input type="text" [(ngModel)]="newNode.name" name="nodeName" required />
+      </label>
+      <label>
+        Type
+        <select [(ngModel)]="newNode.type" name="nodeType">
+          <option value="Plant">Plant</option>
+          <option value="Transit">Transit</option>
+          <option value="Storage">Storage</option>
+        </select>
+      </label>
+      <label>
+        Capacity (RCs)
+        <input type="number" [(ngModel)]="newNode.capacity" name="nodeCapacity" min="0" />
+      </label>
+      <label>
+        Location
+        <input type="text" [(ngModel)]="newNode.location" name="nodeLocation" />
+      </label>
+      <button type="submit" class="btn primary">Add Node</button>
+    </form>
+
+    <table class="table" aria-label="Nodes table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Capacity</th>
+          <th>Location</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let n of nodes(); trackBy: trackById">
+          <td>{{ n.name }}</td>
+          <td>{{ n.type }}</td>
+          <td>{{ n.capacity }}</td>
+          <td>{{ n.location || '—' }}</td>
+          <td>
+            <button class="btn danger" (click)="removeNode(n.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SUPPLIERS TAB -->
+  <div *ngIf="tab() === 'suppliers'" class="panel">
+    <h2>Suppliers</h2>
+
+    <form class="form-grid" (ngSubmit)="addSupplier()">
+      <label>
+        Name
+        <input type="text" [(ngModel)]="newSupplier.name" name="supName" required />
+      </label>
+      <label>
+        Contact
+        <input type="text" [(ngModel)]="newSupplier.contact" name="supContact" />
+      </label>
+      <label class="span-2">
+        Materials (comma-separated)
+        <input
+          type="text"
+          [(ngModel)]="newSupplierMaterialsRaw"
+          (ngModelChange)="onSupplierMaterialsModelChange($event)"
+          name="supMaterialsRaw"
+          placeholder="HLAS, Pasta Calaca" />
+      </label>
+      <button type="submit" class="btn primary">Add Supplier</button>
+    </form>
+
+    <table class="table" aria-label="Suppliers table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Contact</th>
+          <th>Materials Supplied</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of suppliers(); trackBy: trackById">
+          <td>{{ s.name }}</td>
+          <td>{{ s.contact || '—' }}</td>
+          <td>
+            <ul class="inline-list">
+              <li *ngFor="let m of s.materialsSupplied">{{ m }}</li>
+            </ul>
+          </td>
+          <td>
+            <button class="btn danger" (click)="removeSupplier(s.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PARAMETERS TAB -->
+  <div *ngIf="tab() === 'parameters'" class="panel">
+    <h2>Operational Parameters</h2>
+
+    <form class="form-grid" (ngSubmit)="addParam()">
+      <label>
+        Key
+        <input type="text" [(ngModel)]="newParam.key" name="paramKey" required />
+      </label>
+      <label>
+        Value
+        <input type="text" [(ngModel)]="newParam.value" name="paramValue" />
+      </label>
+      <label class="span-2">
+        Description
+        <input type="text" [(ngModel)]="newParam.description" name="paramDesc" />
+      </label>
+      <label>
+        Effective Date
+        <input type="date" [(ngModel)]="newParam.effectiveDate" name="paramDate" />
+      </label>
+      <button type="submit" class="btn primary">Add Parameter</button>
+    </form>
+
+    <table class="table" aria-label="Parameters table">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+          <th>Description</th>
+          <th>Effective</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of parameters(); trackBy: trackById">
+          <td><code>{{ p.key }}</code></td>
+          <td>{{ p.value }}</td>
+          <td>{{ p.description || '—' }}</td>
+          <td>{{ p.effectiveDate || '—' }}</td>
+          <td>
+            <button class="btn danger" (click)="removeParam(p.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

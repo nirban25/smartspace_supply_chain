@@ -1,0 +1,229 @@
+
+<section class="page-header">
+  <h1>
+    <mat-icon aria-hidden="true">verified_user</mat-icon>
+    Hazardous Materials Dashboard
+  </h1>
+  <div class="actions">
+    <button mat-raised-button color="primary" class="refresh-btn" (click)="refresh()" [disabled]="loading()">Refresh</button>
+    <button mat-raised-button class="acknowledge-btn" (click)="acknowledgeAlerts()" [disabled]="!hasAlerts()">Acknowledge</button>
+    <span class="last-update">Last update: {{ statuses()[0]?.lastUpdatedIso | date:'short' }}</span>
+  </div>
+</section>
+
+<mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
+
+<!-- Top KPI strip -->
+<div class="kpi-strip">
+  <mat-card appearance="outlined" class="kpi-card">
+    <div class="kpi-title">Hazardous in Plant</div>
+    <div class="kpi-value">{{ topStripTotals().inPlant }}</div>
+  </mat-card>
+  <mat-card appearance="outlined" class="kpi-card">
+    <div class="kpi-title">Hazardous in Transit</div>
+    <div class="kpi-value">{{ topStripTotals().inTransit }}</div>
+  </mat-card>
+  <mat-card appearance="outlined" class="kpi-card">
+    <div class="kpi-title">Arrivals Today (Haz)</div>
+    <div class="kpi-value">{{ topStripTotals().arrivals }}</div>
+  </mat-card>
+  <mat-card appearance="outlined" class="kpi-card">
+    <div class="kpi-title">Unloaded Today (Haz)</div>
+    <div class="kpi-value">
+      {{ (actualUnloadedToday().get('HLAS') ?? 0)
+       + (actualUnloadedToday().get('PASTA_CALACA') ?? 0)
+       + (actualUnloadedToday().get('SODIUM') ?? 0) }}
+    </div>
+  </mat-card>
+</div>
+
+<!-- Summary banner -->
+<mat-card class="summary" appearance="outlined">
+  <div class="summary-line" [class.ok]="!anyCritical()" [class.warn]="anyCritical()">
+    <mat-icon>{{ anyCritical() ? 'warning' : 'health_and_safety' }}</mat-icon>
+    <span>
+      {{ anyCritical() ? 'Attention: one or more hazardous material rules are violated' : 'All hazardous materials within design constraints' }}
+    </span>
+  </div>
+</mat-card>
+
+<!-- Alerts & Notifications -->
+<ng-container *ngIf="hasAlerts(); else noAlertsTpl">
+  <mat-card class="section" appearance="outlined">
+    <div class="section-title">Alerts &amp; Notifications</div>
+
+    <div class="alerts-list">
+      <div *ngFor="let a of alerts()" class="alert-row"
+           [class.sev-critical]="a.severity === 'CRITICAL'"
+           [class.sev-warning]="a.severity === 'WARNING'"
+           [class.sev-info]="a.severity === 'INFO'">
+        <div class="severity-pill">{{ a.severity }}</div>
+        <div class="alert-body">
+          <div class="alert-msg">{{ a.message }}</div>
+          <div class="alert-meta">
+            Rule: {{ a.ruleCode }} &nbsp;•&nbsp; {{ a.timestampIso | date:'short' }}
+          </div>
+        </div>
+        <div class="alert-actions">
+          <button mat-stroked-button color="accent" (click)="acknowledgeAlerts(a.id)">
+            Acknowledge
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</ng-container>
+
+<ng-template #noAlertsTpl>
+  <mat-card class="section" appearance="outlined">
+    <div class="section-title">Alerts &amp; Notifications</div>
+
+    <!-- Properly aligned empty-state -->
+    <div class="alerts-empty" role="status" aria-live="polite">
+      <mat-icon class="alerts-empty__icon" aria-hidden="true">notifications_off</mat-icon>
+      <span class="alerts-empty__text">No alerts or notifications</span>
+    </div>
+  </mat-card>
+</ng-template>
+
+<!-- Hazardous Status by Material -->
+<mat-card class="section" appearance="outlined">
+  <div class="section-title">Hazardous Status by Material</div>
+
+  <table mat-table [dataSource]="computedRows()" class="hazmat-table">
+    <ng-container matColumnDef="material">
+      <th mat-header-cell *matHeaderCellDef>Material</th>
+      <td mat-cell *matCellDef="let r">
+        <mat-chip [ngClass]="chipClass(r)" selected>
+          <mat-icon>{{ r.statusChip === 'warn' ? 'dangerous' : 'science' }}</mat-icon>
+          {{ r.material === 'PASTA_CALACA' ? 'Pasta Calaca' : r.material }}
+        </mat-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="inTransit">
+      <th mat-header-cell *matHeaderCellDef>In Transit</th>
+      <td mat-cell *matCellDef="let r">{{ r.inTransit }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="pantaco">
+      <th mat-header-cell *matHeaderCellDef>Pantaco</th>
+      <td mat-cell *matCellDef="let r">{{ r.pantaco }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="tacuba">
+      <th mat-header-cell *matHeaderCellDef>Tacuba</th>
+      <td mat-cell *matCellDef="let r">{{ r.tacuba }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="inPlant">
+      <th mat-header-cell *matHeaderCellDef>In Plant (Vallejo)</th>
+      <td mat-cell *matCellDef="let r">{{ r.inPlant }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="arrivalsToday">
+      <th mat-header-cell *matHeaderCellDef>Arrivals Today</th>
+      <td mat-cell *matCellDef="let r">{{ r.arrivalsToday }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="unloadedToday">
+      <th mat-header-cell *matHeaderCellDef>Unloaded Today</th>
+      <td mat-cell *matCellDef="let r">{{ r.unloadedToday }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="releasedEmptyToday">
+      <th mat-header-cell *matHeaderCellDef>Released Empty</th>
+      <td mat-cell *matCellDef="let r">{{ r.releasedEmptyToday }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="designLimitText">
+      <th mat-header-cell *matHeaderCellDef>Design Limit</th>
+      <td mat-cell *matCellDef="let r">{{ r.designLimitText }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="deviation">
+      <th mat-header-cell *matHeaderCellDef>Deviation</th>
+      <td mat-cell *matCellDef="let r">{{ r.deviation }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="planCompliancePct">
+      <th mat-header-cell *matHeaderCellDef>Plan Compliance</th>
+      <td mat-cell *matCellDef="let r">
+        {{ r.planCompliancePct }}%
+        <mat-icon class="compliance-flag" *ngIf="r.planCompliancePct < 90">warning</mat-icon>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="releaseRatio">
+      <th mat-header-cell *matHeaderCellDef>Release Ratio</th>
+      <td mat-cell *matCellDef="let r">
+        {{ r.releaseRatio }}
+        <mat-icon class="release-flag" *ngIf="r.releaseRatio < 1">priority_high</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <div class="table-note">
+    Note: hazardous must not be present at Pantaco/Tacuba; any non-zero value shows risk.
+  </div>
+</mat-card>
+
+<!-- Transit Space / Node Capacities -->
+<mat-card class="section" appearance="outlined">
+  <div class="section-title">Transit Space / Node Capacities</div>
+  <div class="node-row">
+    <div class="node-card">
+      <div class="node-title">Pantaco (design {{ nodeOccupancy().design.pantaco }})</div>
+      <mat-progress-bar mode="determinate"
+                        [value]="(nodeOccupancy().occupancy.pantaco / nodeOccupancy().design.pantaco) * 100"></mat-progress-bar>
+      <div class="node-subtitle">{{ nodeOccupancy().occupancy.pantaco }} (hazardous)</div>
+    </div>
+
+    <div class="node-card">
+      <div class="node-title">Tacuba (design {{ nodeOccupancy().design.tacuba }})</div>
+      <mat-progress-bar mode="determinate"
+                        [value]="(nodeOccupancy().occupancy.tacuba / nodeOccupancy().design.tacuba) * 100"></mat-progress-bar>
+      <div class="node-subtitle">{{ nodeOccupancy().occupancy.tacuba }} (hazardous)</div>
+    </div>
+
+    <div class="node-card">
+      <div class="node-title">Vallejo (design {{ nodeOccupancy().design.vallejo }})</div>
+      <mat-progress-bar mode="determinate"
+                        [value]="(nodeOccupancy().occupancy.vallejo / nodeOccupancy().design.vallejo) * 100"></mat-progress-bar>
+      <div class="node-subtitle">{{ nodeOccupancy().occupancy.vallejo }} (hazardous)</div>
+    </div>
+  </div>
+
+  <div class="node-note">
+    Design capacities guide node use for safety and space planning.
+  </div>
+</mat-card>
+
+<!-- Daily Railcar Receipt -->
+<mat-card class="section" appearance="outlined">
+  <div class="section-title">Daily Railcar Receipt</div>
+  <div class="receipt-kpis">
+    <mat-card appearance="outlined" class="receipt-card">
+      <div class="kpi-title">In Plant</div>
+      <div class="kpi-value">{{ topStripTotals().inPlant }}</div>
+    </mat-card>
+    <mat-card appearance="outlined" class="receipt-card">
+      <div class="kpi-title">Arrivals Today</div>
+      <div class="kpi-value">{{ topStripTotals().arrivals }}</div>
+    </mat-card>
+    <mat-card appearance="outlined" class="receipt-card">
+      <div class="kpi-title">Released Empty</div>
+      <div class="kpi-value">{{ topStripTotals().released }}</div>
+    </mat-card>
+    <mat-card appearance="outlined" class="receipt-card caution">
+      <div class="kpi-title">
+        <mat-icon>summarize</mat-icon>
+        Calculated (InPlant + Arrivals - Released)
+      </div>
+      <div class="kpi-value">{{ topStripTotals().calculated }}</div>
+    </mat-card>
+  </div>
+</mat-card>

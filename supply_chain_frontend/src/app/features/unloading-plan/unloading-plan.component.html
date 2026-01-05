@@ -1,0 +1,118 @@
+<section class="unloading-page">
+  <header class="page-header">
+    <h1>Unloading Plan</h1>
+
+    <div class="plan-meta">
+      <label>
+        <span>Plan Date</span>
+        <input type="date" [(ngModel)]="planDate" />
+      </label>
+      <label>
+        <span>Planner</span>
+        <input type="text" placeholder="Planner name" [(ngModel)]="planner" />
+      </label>
+      <label class="notes">
+        <span>Notes</span>
+        <textarea rows="2" placeholder="Optional notes" [(ngModel)]="notes"></textarea>
+      </label>
+      
+<div class="actions">
+  <button class="btn" (click)="exportJson()">Export JSON</button>
+  <button class="btn" (click)="downloadTxt()">Export TXT</button>
+</div>
+
+    </div>
+
+    <div class="summary-card" [class.alert]="isLowCompliance">
+      <div class="metric">
+        <span>Total Planned</span>
+        <strong>{{ totalPlanned }}</strong>
+      </div>
+      <div class="metric">
+        <span>Total Unloaded</span>
+        <strong>{{ totalUnloaded }}</strong>
+      </div>
+      <div class="metric">
+        <span>Compliance</span>
+        <strong>{{ compliancePct }}%</strong>
+      </div>
+      <aside *ngIf="isLowCompliance" class="alert-msg">
+        ⚠️ Compliance below 90%.
+      </aside>
+    </div>
+  </header>
+
+  <main class="plan-body">
+    <form class="line-form">
+      <div class="row">
+        <label>
+          <span>Material</span>
+          <select [(ngModel)]="newMaterial" name="material">
+            <option value="" disabled>Select material</option>
+            <option *ngFor="let m of materials" [value]="m">{{ m }}</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Node</span>
+          <select [(ngModel)]="newNode" name="node">
+            <option value="" disabled>Select node</option>
+            <option *ngFor="let n of nodes" [value]="n">{{ n }}</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Planned RCs</span>
+          <input type="number" min="0" [(ngModel)]="newPlannedRc" name="plannedRc" />
+        </label>
+
+        <label>
+          <span>Unloaded RCs</span>
+          <input type="number" min="0" [(ngModel)]="newUnloadedRc" name="unloadedRc" />
+        </label>
+      </div>
+      
+
+      <div class="row actions">
+        <button class="btn primary" type="button" (click)="addLine()">Add Line</button>
+        <button class="btn" type="reset"
+                (click)="newMaterial=''; newNode=''; newPlannedRc=0; newUnloadedRc=0">
+          Clear
+        </button>
+      </div>
+    </form>
+
+    <section class="table-wrap">
+      <table class="grid">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Material</th>
+            <th>Node</th>
+            <th>Planned</th>
+            <th>Unloaded</th>
+            <th>Compliance % (line)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let l of lines; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ l.material }}</td>
+            <td>{{ l.node }}</td>
+            <td>{{ l.plannedRc }}</td>
+            <td>{{ l.unloadedRc }}</td>
+            <td>{{ getLineCompliance(l) }}%</td>
+            <td class="row-actions">
+              <button class="btn" (click)="editLine(i)">Edit</button>
+              <button class="btn danger" (click)="removeLine(i)">Delete</button>
+            </td>
+          </tr>
+          <tr *ngIf="lines.length === 0">
+            <td colspan="7" class="empty-state">No lines added yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</section>

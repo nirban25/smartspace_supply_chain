@@ -1,0 +1,141 @@
+
+@use "sass:color";
+
+$theme-bg: #FFF8DC; // pale yellow (cornsilk)
+$card-bg: #fff;
+$card-border: #e6e1c5;
+$shadow: 0 2px 8px rgba(0,0,0,0.04);
+$text: #222;
+$muted: #888;
+$badge-bg: #f8f4e1;
+$badge-border: #e6e1c5;
+$ok: #1e8e3e;
+$over: #c5221f;
+$warn: #f9ab00;
+$info: #1967d2;
+
+.nodes {
+  padding: 1.5rem;
+  background: $theme-bg;
+  color: $text;
+  min-height: 100vh;
+
+  &__header {
+    margin-bottom: 1.5rem;
+
+    h2 { margin: 0 0 .25rem 0; font-weight: 600; }
+    .muted { color: $muted; }
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: $card-bg;
+  border: 1px solid $card-border;
+  border-radius: 16px;
+  box-shadow: $shadow;
+
+  &__header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.25rem; border-bottom: 1px solid $card-border;
+
+    h3 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+    .badge {
+      border-radius: 999px;
+      padding: .3rem .7rem;
+      font-size: .85rem;
+      background: $badge-bg;
+      border: 1px solid $badge-border;
+      color: $text;
+
+      &--ok { color: $ok; border-color: color.adjust($ok, $lightness: 20%); }
+      &--over { color: $over; border-color: color.adjust($over, $lightness: 20%); }
+    }
+  }
+
+  &__body { padding: 1rem 1.25rem; }
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  .kpi {
+    background: $theme-bg;
+    border: 1px solid $card-border;
+    border-radius: 10px;
+    padding: .7rem .5rem;
+
+    &__label { color: $muted; font-size: .9rem; }
+    &__value { font-size: 1.25rem; font-weight: 600; }
+  }
+}
+
+.progress {
+  height: 10px; background: #f3eac2; border-radius: 999px; margin: .7rem 0 1.2rem 0;
+  &__bar {
+    height: 100%; background: #222; border-radius: 999px;
+    &--over { background: $over; }
+  }
+}
+
+.materials {
+  h4 { margin: .5rem 0; font-size: 1rem; }
+  &__list {
+    list-style: none; padding: 0; margin: 0;
+    li { display: flex; align-items: center; justify-content: space-between; padding: .25rem 0; }
+  }
+  &__name { color: $text; }
+  &__qty { font-weight: 600; }
+}
+
+.alerts {
+  margin-top: 1.5rem;
+
+  &__list { list-style: none; padding: 0; margin: .5rem 0 0 0; }
+
+  .alert {
+    display: grid; grid-template-columns: 1fr auto; row-gap: .25rem;
+    border: 1px solid $card-border; border-left-width: 4px; border-radius: 10px;
+    padding: .7rem 1rem; margin-bottom: .7rem; background: $card-bg;
+
+    &__title { font-weight: 600; }
+    &__msg { grid-column: 1 / span 2; color: $text; }
+    &__time { color: $muted; font-size: .85rem; justify-self: end; }
+  }
+
+  .alert--critical { border-left-color: $over; }
+  .alert--warning  { border-left-color: $warn; }
+  .alert--info     { border-left-color: $info; }
+}
+
+
+.audit {
+  margin-top: 1.5rem;
+  background: $card-bg;
+  border: 1px solid $card-border;
+  border-radius: 10px;
+  padding: 1rem;
+  ol { 
+    margin: .25rem 0 0 0; 
+    padding-left: 1.5rem;
+  }
+  li { 
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; 
+    font-size: .85rem; 
+    word-break: break-word;      // allow breaking long words
+    white-space: pre-wrap;       // wrap long lines and preserve whitespace
+    overflow-wrap: anywhere;     // break anywhere if needed
+    box-sizing: border-box;
+    max-width: 100%;             // ensure it never overflows the card
+  }
+}
+
+.muted { color: $muted; }

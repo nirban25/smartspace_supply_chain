@@ -1,0 +1,66 @@
+<div class="receipt-page">
+  <header class="page-header">
+    <h1>Total Railcar Receipt per Day</h1>
+    <div class="meta">
+      <span>Last update: {{ lastUpdatedDisplay }}</span>
+      <span class="source" *ngIf="data?.dataSource">Source: {{ data?.dataSource }}</span>
+    </div>
+  </header>
+ 
+  <section class="kpis">
+    <div class="card">
+      <div class="label">#RCs in plant (total)</div>
+      <div class="value">{{ data?.carsInPlantTotal ?? 0 }}</div>
+    </div>
+    <div class="card">
+      <div class="label">#RCs arrival (today)</div>
+      <div class="value">{{ data?.arrivalsToday ?? 0 }}</div>
+    </div>
+    <div class="card">
+      <div class="label">#RCs released to FCC (empties)</div>
+      <div class="value">{{ data?.releasedToFerrovalle ?? 0 }}</div>
+    </div>
+    <div class="card">
+      <div class="label">Computed total (in + arrivals − released)</div>
+      <div class="value">{{ totalComputed }}</div>
+    </div>
+ 
+    <div class="card warning" *ngIf="exceedsLimit">
+      <div class="label">Alert: Daily limit exceeded</div>
+      <div class="value">Limit {{ DAILY_LIMIT }}</div>
+    </div>
+ 
+    <div class="card forecast" *ngIf="!exceedsLimit && forecastExceedsLimit">
+      <div class="label">Forecast Alert: Planned + in plant − exits will exceed limit</div>
+      <div class="value">Limit {{ DAILY_LIMIT }}</div>
+    </div>
+  </section>
+ 
+ 
+<section class="rc-material-section" *ngIf="data?.breakdownByMaterial?.length">
+  <div class="rc-section-header">
+    <h3>Railcars by material in plant</h3>
+    <div class="rc-table-meta">
+      <span>Total materials: {{ data?.breakdownByMaterial?.length }}</span>
+    </div>
+  </div>
+ 
+  <div class="rc-table-wrapper">
+    <table class="rc-material-table" aria-label="Railcars by material in plant">
+      <thead>
+        <tr>
+          <th scope="col">Material</th>
+          <th scope="col" class="rc-col-num">#RCs at plant</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data?.breakdownByMaterial; let i = index" [class.rc-alt-row]="i % 2 === 1">
+          <td>{{ item.material }}</td>
+          <td class="rc-num">{{ item.carsInPlant }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+ 
+</div>
