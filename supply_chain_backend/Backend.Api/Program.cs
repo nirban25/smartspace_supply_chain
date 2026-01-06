@@ -13,6 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SupplyChainDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("SupplyChainDb")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular",
+        builder => builder
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
 builder.Services.AddAutoMapper(typeof(EntityToDtoProfile).Assembly);
 
@@ -73,23 +81,6 @@ builder.Services
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
             ClockSkew = TimeSpan.Zero
         };
-
-        options.Events = new JwtBearerEvents
-        {
-            OnAuthenticationFailed = context =>
-            {
-                Console.WriteLine("JWT Auth failed: ");
-                Console.WriteLine(context.Exception.Message);
-                return Task.CompletedTask;
-            },
-            OnChallenge = context =>
-            {
-                Console.WriteLine("JWT Challenge Error: ");
-                Console.WriteLine(context.Error);
-                Console.WriteLine(context.ErrorDescription);
-                return Task.CompletedTask;
-            }
-        };
     });
 
 builder.Services.AddAuthorization();
@@ -100,6 +91,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseAuthentication();
+app.UseCors("AllowAngular");
 app.UseAuthorization();
 
 app.MapControllers();
